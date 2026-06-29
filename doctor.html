@@ -792,28 +792,31 @@
     flex-shrink:0;
     overflow-x:auto;
     overflow-y:hidden;
-    border-bottom:1px solid #e2e8f0;
-    padding:0 8px;
-    gap:4px;
+    border-bottom:1px solid #f1f5f9;
+    padding:10px;
+    gap:6px;
     scrollbar-width:none;
     -ms-overflow-style:none;
   }
   .kartei-tabs::-webkit-scrollbar{display:none;}
   .kartei-tab{
     flex-shrink:0;
-    padding:10px 12px;
-    border:none;background:transparent;cursor:pointer;
-    font-family:inherit;font-size:11px;font-weight:700;
-    color:#64748b;border-bottom:2px solid transparent;
+    padding:8px 14px;
+    border:none;
+    background:#f1f5f9;
+    cursor:pointer;
+    font-family:inherit;font-size:12px;font-weight:600;
+    color:#64748b;
+    border-radius:10px;
     transition:all 0.15s;white-space:nowrap;
     display:flex;align-items:center;gap:4px;
   }
   .kartei-tab.active{
-    color:#1e40af;
-    border-bottom-color:#1e40af;
-    background:linear-gradient(180deg,transparent 60%,#eff6ff 100%);
+    color:white !important;
+    background:#1e40af;
+    font-weight:700;
   }
-  .kartei-tab:hover{color:#1e40af;background:#f8fafc;}
+  .kartei-tab:hover:not(.active){color:#1e40af !important;background:#dbeafe;}
 
   .kartei-body{flex:1;overflow-y:auto;padding:0;}
 
@@ -849,9 +852,16 @@
   .k-empty-icon{font-size:32px;margin-bottom:8px;}
 
   /* Kartei Stammdaten */
-  .k-section{padding:14px 18px;border-bottom:1px solid #f1f5f9;}
+  .k-section{
+    background:white;
+    border-left:4px solid #0f172a;
+    border-radius:16px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    margin:10px;
+    padding:16px;
+  }
   .k-section-title{
-    font-size:10px;font-weight:700;color:#64748b;
+    font-size:11px;font-weight:700;color:#0f172a;
     text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;
   }
   .k-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:12px;}
@@ -865,10 +875,12 @@
 
   /* Kartei Visit Timeline */
   .k-visit{
-    padding:14px 18px;border-bottom:1px solid #f1f5f9;
-    cursor:pointer;transition:background 0.12s;
+    background:white;border-left:4px solid #1e40af;
+    border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    margin:10px;padding:14px;
+    cursor:pointer;transition:background 0.12s,box-shadow 0.12s;
   }
-  .k-visit:hover{background:#f8fafc;}
+  .k-visit:hover{background:#f8fafc;box-shadow:0 4px 16px rgba(0,0,0,0.1);}
   .k-visit-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
   .k-visit-date{
     font-size:10px;font-weight:700;color:white;background:#1e40af;
@@ -893,12 +905,12 @@
   .k-form-input{
     width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;
     border-radius:8px;font-family:inherit;font-size:12px;color:#0f172a;
-    outline:none;transition:border-color 0.15s;background:white;
+    outline:none;transition:border-color 0.15s,box-shadow 0.15s;background:#EEF4FF;
   }
-  .k-form-input:focus{border-color:#1e40af;}
+  .k-form-input:focus{border-color:#1e40af;box-shadow:0 0 0 3px rgba(30,64,175,0.15);}
   .k-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .k-form-save{
-    width:100%;padding:10px;border:none;border-radius:9px;
+    width:100%;padding:10px;border:none;border-radius:12px;
     background:linear-gradient(135deg,#1e40af,#1d4ed8);
     color:white;font-family:inherit;font-size:13px;font-weight:700;
     cursor:pointer;transition:opacity 0.15s;margin-top:4px;
@@ -1483,13 +1495,13 @@
     <div class="kartei-tabs">
       <button class="kartei-tab active" onclick="switchKarteiTab('verlauf',this)">Verlauf</button>
       <button class="kartei-tab" onclick="switchKarteiTab('stamm',this)">Stamm</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('anamnese',this)" style="color:#0891b2;">Anamnese</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('anamnese',this)">Anamnese</button>
       <button class="kartei-tab" onclick="switchKarteiTab('neu',this)">+ Neu</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('ueberweisung',this)" style="color:#7c3aed;">Überweisung</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('rezept',this)" style="color:#1e40af;">Rezept</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('impfung',this)" style="color:#16a34a;">Impfung</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('labor',this)" style="color:#dc2626;">Labor</button>
-      <button class="kartei-tab" onclick="switchKarteiTab('suche',this)" style="color:#0891b2;">Suche</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('ueberweisung',this)">Überweisung</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('rezept',this)">Rezept</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('impfung',this)">Impfung</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('labor',this)">Labor</button>
+      <button class="kartei-tab" onclick="switchKarteiTab('suche',this)">Suche</button>
     </div>
 
     <div class="kartei-body" id="karteiBody">
@@ -1544,7 +1556,7 @@
         </div>
 
         <!-- Common Section -->
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:10px;">Allergien & Unverträglichkeiten</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" style="accent-color:#dc2626;">Penizillin</label>
@@ -1555,17 +1567,17 @@
           <input class="k-form-input" placeholder="Weitere Allergien..." style="margin-top:4px;">
         </div>
 
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:8px;">Aktuelle Medikamente</div>
           <textarea class="k-form-input" rows="2" placeholder="z.B. Metformin 500mg 2x täglich..." style="resize:none;"></textarea>
         </div>
 
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:8px;">Frühere Operationen</div>
           <textarea class="k-form-input" rows="2" placeholder="z.B. Appendektomie 2015..." style="resize:none;"></textarea>
         </div>
 
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:8px;">‍‍ Familienanamnese</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" style="accent-color:#0891b2;">Diabetes</label>
@@ -1575,7 +1587,7 @@
           </div>
         </div>
 
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:8px;">Sozialanamnese</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div>
@@ -1634,7 +1646,7 @@
           </div>
 
           <!-- Aktuelle Beschwerden (per Besuch) -->
-          <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px;margin-bottom:12px;">
+          <div style="background:#f0f9ff;border-left:4px solid #16a34a;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:12px;margin-bottom:12px;">
             <div style="font-size:12px;font-weight:700;color:#0891b2;margin-bottom:8px;">Aktuelle Beschwerden (heute)</div>
             <div class="k-form-group">
               <label class="k-form-label">Hauptbeschwerde</label>
@@ -1683,7 +1695,7 @@
           </div>
 
           <!-- Patient auto-filled -->
-          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+          <div style="background:#faf5ff;border-left:4px solid #7c3aed;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:10px 12px;margin-bottom:12px;">
             <div style="font-size:9px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Patient — automatisch ausgefüllt ✓</div>
             <div style="font-weight:700;color:#0f172a;font-size:13px;" id="uw-patient-name">Thomas Müller</div>
             <div style="color:#64748b;font-size:11px;margin-top:1px;" id="uw-patient-meta">ÖGK · SV 1234 010185 · 41 J.</div>
@@ -1796,7 +1808,7 @@
           </div>
 
           <!-- Send options -->
-          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:9px;padding:10px 12px;margin-bottom:12px;">
+          <div style="background:#faf5ff;border-left:4px solid #7c3aed;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:10px 12px;margin-bottom:12px;">
             <div style="font-size:10px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;">Versandoptionen</div>
             <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;margin-bottom:6px;">
               <input type="checkbox" id="uwSendChat" checked style="accent-color:#7c3aed;width:14px;height:14px;">
@@ -1833,7 +1845,7 @@
         </div>
 
         <!-- Medikament 1 -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:#f8fafc;border-left:4px solid #1e40af;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#1e40af;margin-bottom:10px;">Medikament 1</div>
           <div class="k-form-section">
             <div class="k-form-label">Medikament / Wirkstoff</div>
@@ -1852,7 +1864,7 @@
         </div>
 
         <!-- Medikament 2 (optional) -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="background:#f8fafc;border-left:4px solid #1e40af;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:10px;">Medikament 2 (optional)</div>
           <div class="k-form-section">
             <div class="k-form-label">Medikament / Wirkstoff</div>
@@ -1896,7 +1908,7 @@
         </div>
 
         <!-- Impfung hinzufügen -->
-        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="background:#f0fdf4;border-left:4px solid #16a34a;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:14px;">
           <div style="font-size:12px;font-weight:700;color:#15803d;margin-bottom:10px;">＋ Neue Impfung eintragen</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
             <div>
@@ -1980,7 +1992,7 @@
         </div>
 
         <!-- Neuer Befund -->
-        <div style="background:#fff5f5;border:1px solid #fecaca;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="background:#fff5f5;border-left:4px solid #dc2626;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:14px;">
           <div style="font-size:12px;font-weight:700;color:#dc2626;margin-bottom:10px;">＋ Neuer Befund</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
             <div>
@@ -2062,7 +2074,7 @@
         </div>
 
         <!-- Suchfelder -->
-        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="background:white;border-left:4px solid #0891b2;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:14px;margin-bottom:14px;">
           <div style="display:grid;grid-template-columns:1fr;gap:10px;">
             <div>
               <div class="k-form-label">Name</div>
