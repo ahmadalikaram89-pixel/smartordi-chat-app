@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGB – Smartordi.chat</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;color:#0f172a;}
+
+.nav{background:white;border-bottom:1px solid #e2e8f0;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.06);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.nav-logo-text{font-size:16px;font-weight:800;color:#0f172a;}
+.nav-logo-text span{color:#1e40af;}
+.nav-back{background:#f1f5f9;border:none;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;color:#475569;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:6px;}
+.nav-back:hover{background:#e2e8f0;}
+
+.hero{background:linear-gradient(135deg,#0f172a,#1e293b);padding:36px 24px 60px;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;color:white;margin-bottom:12px;}
+.hero-title{font-size:26px;font-weight:800;color:white;margin-bottom:6px;}
+.hero-meta{font-size:12px;color:rgba(255,255,255,0.6);}
+
+.main{max-width:760px;margin:-24px auto 48px;padding:0 16px;position:relative;z-index:1;}
+
+.section{background:white;border-radius:16px;border-left:4px solid #0f172a;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:14px;overflow:hidden;}
+.section-header{padding:16px 20px 12px;border-bottom:1px solid #f1f5f9;}
+.section-num{font-size:10px;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.section-title{font-size:15px;font-weight:800;color:#0f172a;}
+.section-body{padding:16px 20px;font-size:13.5px;color:#374151;line-height:1.75;}
+.section-body p{margin-bottom:10px;}
+.section-body p:last-child{margin-bottom:0;}
+.section-body ul{padding-left:18px;margin-bottom:10px;}
+.section-body li{margin-bottom:5px;}
+.section-body strong{color:#0f172a;font-weight:700;}
+
+.highlight-box{background:#EEF4FF;border:1px solid #c7d7f5;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:13px;color:#1e40af;font-weight:600;}
+.warning-box{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:13px;color:#dc2626;font-weight:600;}
+
+.contact-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin:10px 0;font-size:13px;line-height:1.7;}
+.contact-box strong{display:block;font-size:12px;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+
+.footer{text-align:center;padding:24px 16px;font-size:11px;color:#94a3b8;line-height:1.8;}
+.footer a{color:#1e40af;text-decoration:none;font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon"><img src="logo..jpeg" alt="Logo" style="width:100%;height:100%;object-fit:contain;border-radius:6px;"></div>
+    <div class="nav-logo-text">Smartordi<span>.chat</span></div>
+  </a>
+  <a class="nav-back" href="register.html">← Zurück</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Österreichisches Recht · Stand Mai 2026</div>
+  <div class="hero-title">Allgemeine Geschäftsbedingungen</div>
+  <div class="hero-meta">SmartOrdi OG · Brucknerstraße 20, 4020 Linz</div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 1</div>
+      <div class="section-title">Geltungsbereich</div>
+    </div>
+    <div class="section-body">
+      <p>Diese AGB gelten für alle Verträge zwischen der <strong>SmartOrdi OG</strong> und ihren Kunden (Ordination) über die Nutzung der digitalen Plattform SmartOrdi.</p>
+      <p>Abweichende Bedingungen des Auftraggebers werden nur dann Vertragsbestandteil, wenn SmartOrdi ihrer Geltung ausdrücklich schriftlich zugestimmt hat.</p>
+      <p>Diese AGB gelten ausschließlich gegenüber Unternehmern im Sinne des § 1 UGB.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 2</div>
+      <div class="section-title">Leistungsbeschreibung</div>
+    </div>
+    <div class="section-body">
+      <p>SmartOrdi stellt eine digitale Kommunikationsplattform für Arztordinationen bereit. Der Leistungsumfang umfasst:</p>
+      <ul>
+        <li>Mehrsprachige digitale Patientenanamnese (Arabisch, Türkisch, Bosnisch, Englisch, Deutsch)</li>
+        <li>Automatische Übersetzung der Patientendaten ins Deutsche</li>
+        <li>Online-Terminbuchungssystem</li>
+        <li>Arzt-Dashboard zur Verwaltung von Patientendaten</li>
+        <li>PDF-Export der Patientenzusammenfassung</li>
+        <li>Upload-Funktion für Laborbefunde, Röntgenbilder und sonstige Dokumente</li>
+      </ul>
+      <div class="warning-box">SmartOrdi ist eine Kommunikations- und Organisationsplattform. Sie ersetzt keine medizinische Diagnose oder ärztliche Behandlung. Die medizinische Verantwortung liegt ausschließlich beim behandelnden Arzt.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 3</div>
+      <div class="section-title">Vertragsabschluss und Pilotphase</div>
+    </div>
+    <div class="section-body">
+      <p>Der Vertrag kommt durch schriftliche Bestätigung per E-Mail seitens SmartOrdi oder durch Freischaltung des Zugangs zustande.</p>
+      <div class="highlight-box">Neukunden erhalten eine kostenlose Pilotphase von 2 bis 3 Monaten ohne Vertragsbindung — alle Funktionen des gebuchten Tarifs sind verfügbar.</div>
+      <p>Nach Ablauf der Pilotphase geht das Vertragsverhältnis automatisch in ein kostenpflichtiges Abonnement über, sofern nicht spätestens <strong>14 Tage vor Ablauf</strong> eine Kündigung per E-Mail an team@smartordi.eu erfolgt.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 4</div>
+      <div class="section-title">Preise und Zahlungsbedingungen</div>
+    </div>
+    <div class="section-body">
+      <p>Die aktuellen Preise sind auf www.smartordi.eu veröffentlicht und verstehen sich zuzüglich der gesetzlichen Umsatzsteuer.</p>
+      <p>Die Abonnementgebühr ist <strong>monatlich im Voraus</strong> fällig und wird per Banküberweisung oder SEPA-Lastschrift beglichen.</p>
+      <p>Bei Zahlungsverzug von mehr als 14 Tagen ist SmartOrdi berechtigt, den Zugang zur Plattform bis zur vollständigen Begleichung der offenen Beträge zu sperren.</p>
+      <p>Preisanpassungen werden mit einer Ankündigungsfrist von <strong>4 Wochen</strong> per E-Mail mitgeteilt. Bei Nichteinverständnis besteht ein Sonderkündigungsrecht.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 5</div>
+      <div class="section-title">Vertragsdauer und Kündigung</div>
+    </div>
+    <div class="section-body">
+      <p>Nach der Pilotphase wird der Vertrag auf unbestimmte Zeit geschlossen und ist <strong>monatlich kündbar</strong>.</p>
+      <p>Die Kündigung hat schriftlich per E-Mail an <strong>team@smartordi.eu</strong> zu erfolgen. Die Kündigungsfrist beträgt <strong>14 Tage zum Monatsende</strong>.</p>
+      <p>Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt (insbesondere bei Verstößen gegen datenschutzrechtliche Verpflichtungen).</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 6</div>
+      <div class="section-title">Datenschutz und DSGVO</div>
+    </div>
+    <div class="section-body">
+      <p>SmartOrdi verarbeitet personenbezogene Daten ausschließlich im Einklang mit der DSGVO und dem österreichischen Datenschutzgesetz (DSG).</p>
+      <p>Zwischen SmartOrdi und dem Auftraggeber wird ein <strong>Auftragsverarbeitungsvertrag (AVV) gemäß Art. 28 DSGVO</strong> abgeschlossen. Der AVV ist Bestandteil des Vertragsverhältnisses.</p>
+      <ul>
+        <li>Der Auftraggeber ist als <strong>Verantwortlicher</strong> im Sinne der DSGVO für die rechtmäßige Erhebung der Patientendaten verantwortlich</li>
+        <li>SmartOrdi agiert als <strong>Auftragsverarbeiter</strong></li>
+        <li>Datenspeicherung ausschließlich auf EU-Servern (Hetzner Online GmbH, Deutschland/Österreich)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 7</div>
+      <div class="section-title">Pflichten des Auftraggebers</div>
+    </div>
+    <div class="section-body">
+      <p>Der Auftraggeber verpflichtet sich:</p>
+      <ul>
+        <li>Zugangsdaten sicher aufzubewahren und nicht an Dritte weiterzugeben</li>
+        <li>Patienten über die Nutzung der Plattform und die Datenverarbeitung zu informieren</li>
+        <li>Die Plattform nicht für rechtswidrige Zwecke zu verwenden</li>
+        <li>SmartOrdi unverzüglich über Sicherheitsvorfälle oder Datenschutzverletzungen zu informieren</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 8</div>
+      <div class="section-title">Haftung und Gewährleistung</div>
+    </div>
+    <div class="section-body">
+      <p>SmartOrdi haftet für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit unbegrenzt. Für sonstige Schäden haftet SmartOrdi nur bei Vorsatz oder grober Fahrlässigkeit.</p>
+      <p>SmartOrdi übernimmt <strong>keine Haftung</strong> für die medizinische Richtigkeit der von Patienten eingegebenen Daten sowie für Übersetzungsfehler, die zu medizinischen Fehlentscheidungen führen könnten.</p>
+      <div class="highlight-box">SmartOrdi gewährleistet eine Systemverfügbarkeit von mindestens 99% im Jahresdurchschnitt, ausgenommen geplante Wartungsarbeiten.</div>
+      <p>Die Haftung für mittelbare Schäden, Folgeschäden oder entgangenen Gewinn ist ausgeschlossen, soweit gesetzlich zulässig.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 9</div>
+      <div class="section-title">Geistiges Eigentum</div>
+    </div>
+    <div class="section-body">
+      <p>Alle Rechte an der Plattform SmartOrdi, einschließlich Software, Design, Marken und Inhalten, verbleiben ausschließlich bei <strong>SmartOrdi OG</strong>.</p>
+      <p>Dem Auftraggeber wird ein nicht-exklusives, nicht übertragbares Nutzungsrecht für die Dauer des Vertragsverhältnisses eingeräumt.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 10</div>
+      <div class="section-title">Änderungen der AGB</div>
+    </div>
+    <div class="section-body">
+      <p>SmartOrdi behält sich vor, diese AGB jederzeit zu ändern. Änderungen werden dem Auftraggeber per E-Mail mit einer Frist von <strong>4 Wochen</strong> vor Inkrafttreten mitgeteilt.</p>
+      <p>Widerspricht der Auftraggeber der Änderung nicht innerhalb von 2 Wochen nach Mitteilung, gelten die geänderten AGB als akzeptiert. Bei Widerspruch besteht ein Sonderkündigungsrecht.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 11</div>
+      <div class="section-title">Anwendbares Recht und Gerichtsstand</div>
+    </div>
+    <div class="section-body">
+      <p>Es gilt ausschließlich <strong>österreichisches Recht</strong> unter Ausschluss des UN-Kaufrechts (CISG).</p>
+      <p>Ausschließlicher Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist <strong>Linz, Österreich</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">§ 12</div>
+      <div class="section-title">Salvatorische Klausel</div>
+    </div>
+    <div class="section-body">
+      <p>Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder werden, berührt dies die Wirksamkeit der übrigen Bestimmungen nicht. Die unwirksame Bestimmung ist durch eine wirksame zu ersetzen, die dem wirtschaftlichen Zweck am nächsten kommt.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  SmartOrdi OG · Brucknerstraße 20, 4020 Linz · <a href="mailto:team@smartordi.eu">team@smartordi.eu</a><br>
+  +43 667 762439293 · www.smartordi.eu · Stand: Mai 2026<br>
+  <a href="datenschutz.html">Datenschutz</a> · <a href="register.html">Registrierung</a> · <a href="login.html">Login</a>
+</div>
+
+</body>
+</html>
