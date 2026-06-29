@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registrierung – Smartordi.chat</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;}
+
+/* NAV */
+.nav{background:white;border-bottom:1px solid #e2e8f0;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.06);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.nav-logo-text{font-size:17px;font-weight:800;color:#0f172a;}
+.nav-logo-text span{color:#1e40af;}
+.nav-login{background:#f1f5f9;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:#475569;cursor:pointer;font-family:inherit;text-decoration:none;}
+.nav-login:hover{background:#e2e8f0;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1e40af,#1d4ed8);padding:48px 24px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.hero::after{content:'';position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:white;margin-bottom:16px;}
+.hero-title{font-size:28px;font-weight:800;color:white;margin-bottom:10px;line-height:1.2;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;max-width:480px;margin:0 auto;}
+
+/* MAIN */
+.main{max-width:720px;margin:0 auto;padding:0 16px 48px;margin-top:-32px;position:relative;z-index:1;}
+
+/* PLAN SELECTOR */
+.plan-section{background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.section-title{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.plans{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.plan{border:2px solid #e2e8f0;border-radius:12px;padding:14px;cursor:pointer;transition:all 0.2s;position:relative;}
+.plan:hover{border-color:#1e40af;}
+.plan.selected{border-color:#1e40af;background:#eff6ff;}
+.plan.popular::before{content:'⭐ Beliebt';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#1e40af;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;}
+.plan-name{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;}
+.plan-price{font-size:20px;font-weight:800;color:#1e40af;}
+.plan-price span{font-size:11px;font-weight:500;color:#64748b;}
+.plan-features{margin-top:8px;}
+.plan-feature{font-size:11px;color:#475569;margin-bottom:2px;}
+
+/* FORM */
+.form-section{background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;}
+.form-input{padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:14px;color:#0f172a;outline:none;transition:all 0.2s;background:#fafafa;}
+.form-input:focus{border-color:#1e40af;background:white;box-shadow:0 0 0 3px rgba(30,64,175,0.08);}
+.form-input::placeholder{color:#94a3b8;}
+select.form-input{cursor:pointer;}
+
+/* CHECKBOX */
+.checkbox-group{display:flex;align-items:flex-start;gap:10px;padding:14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;}
+.checkbox-group input[type=checkbox]{width:18px;height:18px;accent-color:#1e40af;flex-shrink:0;margin-top:1px;}
+.checkbox-label{font-size:12px;color:#475569;line-height:1.5;}
+.checkbox-label a{color:#1e40af;font-weight:600;}
+
+/* SUBMIT */
+.btn-submit{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(30,64,175,0.3);margin-top:4px;}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(30,64,175,0.35);}
+.btn-submit.loading{opacity:0.7;cursor:not-allowed;transform:none;}
+.spinner{display:none;width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TRUST */
+.trust-bar{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:14px;}
+.trust-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b;font-weight:600;}
+
+/* ERROR */
+.error-msg{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#dc2626;margin-bottom:12px;display:none;align-items:center;gap:7px;}
+.error-msg.show{display:flex;}
+
+/* SUCCESS */
+.success-overlay{position:fixed;inset:0;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s;padding:24px;text-align:center;}
+.success-overlay.show{opacity:1;pointer-events:all;}
+.success-icon{font-size:64px;margin-bottom:16px;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
+.success-title{font-size:24px;font-weight:800;color:#0f172a;margin-bottom:8px;}
+.success-sub{font-size:14px;color:#64748b;line-height:1.6;max-width:380px;margin:0 auto;}
+.success-steps{margin-top:24px;text-align:left;max-width:360px;width:100%;}
+.success-step{display:flex;align-items:center;gap:12px;padding:12px;background:#f8fafc;border-radius:10px;margin-bottom:8px;}
+.success-step-num{width:28px;height:28px;background:#1e40af;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.success-step-text{font-size:13px;color:#475569;}
+.success-btn{margin-top:20px;padding:12px 32px;background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;border:none;border-radius:12px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+
+@media(max-width:600px){
+  .plans{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .hero-title{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🩺</div>
+    <div class="nav-logo-text">Smartordi<span>.chat</span></div>
+  </a>
+  <a class="nav-login" href="login.html">Bereits registriert? Anmelden →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🇦🇹 Österreich · DSGVO-konform · 30 Tage kostenlos</div>
+  <div class="hero-title">Ihre Ordination digital.<br>In 5 Minuten live.</div>
+  <div class="hero-sub">Sichere Kommunikation zwischen Arzt und Patient. Ende-zu-Ende verschlüsselt. Österreichische Server.</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Plan Selector -->
+  <div class="plan-section">
+    <div class="section-title">📦 Paket wählen <span style="font-size:11px;font-weight:500;color:#64748b;">— 30 Tage kostenlos testen</span></div>
+    <div class="plans">
+      <div class="plan" id="plan-basic" onclick="selectPlan('basic')">
+        <div class="plan-name">Basic</div>
+        <div class="plan-price">€49<span>/Monat</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">✓ 1 Arzt</div>
+          <div class="plan-feature">✓ Bis 100 Patienten</div>
+          <div class="plan-feature">✓ Chat & Kartei</div>
+          <div class="plan-feature">✓ Überweisung PDF</div>
+        </div>
+      </div>
+      <div class="plan popular selected" id="plan-pro" onclick="selectPlan('pro')">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">€99<span>/Monat</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">✓ 1 Arzt + Sekretärin</div>
+          <div class="plan-feature">✓ Bis 500 Patienten</div>
+          <div class="plan-feature">✓ Alles in Basic</div>
+          <div class="plan-feature">✓ Rezept & Impfpass</div>
+        </div>
+      </div>
+      <div class="plan" id="plan-enterprise" onclick="selectPlan('enterprise')">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">€249<span>/Monat</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">✓ Mehrere Ärzte</div>
+          <div class="plan-feature">✓ Unbegrenzte Patienten</div>
+          <div class="plan-feature">✓ Alles in Pro</div>
+          <div class="plan-feature">✓ API & Integration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-section">
+    <div class="section-title">👨‍⚕️ Ihre Daten</div>
+
+    <div class="error-msg" id="errorMsg"><span>⚠️</span><span id="errorText">Bitte alle Pflichtfelder ausfüllen.</span></div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Titel</label>
+        <select class="form-input" id="f-titel">
+          <option value="">—</option>
+          <option>Dr.</option>
+          <option>Dr. med.</option>
+          <option>OA Dr.</option>
+          <option>Prim. Dr.</option>
+          <option>Prof. Dr.</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fachrichtung *</label>
+        <select class="form-input" id="f-fach">
+          <option value="">Bitte wählen...</option>
+          <option>Allgemeinmedizin</option>
+          <option>Innere Medizin</option>
+          <option>Kinderheilkunde</option>
+          <option>Gynäkologie</option>
+          <option>Orthopädie</option>
+          <option>Neurologie</option>
+          <option>Psychiatrie</option>
+          <option>Kardiologie</option>
+          <option>Dermatologie</option>
+          <option>Augenheilkunde</option>
+          <option>HNO</option>
+          <option>Urologie</option>
+          <option>Sonstige</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vorname *</label>
+        <input class="form-input" id="f-vorname" placeholder="Vorname" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nachname *</label>
+        <input class="form-input" id="f-nachname" placeholder="Nachname" type="text">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Ordinationsname *</label>
+        <input class="form-input" id="f-ordination" placeholder="z.B. Ordination Dr. Müller" type="text">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Adresse *</label>
+        <input class="form-input" id="f-adresse" placeholder="Straße, PLZ, Ort" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-Mail *</label>
+        <input class="form-input" id="f-email" placeholder="arzt@ordination.at" type="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telefon *</label>
+        <input class="form-input" id="f-tel" placeholder="+43 ..." type="tel">
+      </div>
+    </div>
+  </div>
+
+  <!-- Datenschutz -->
+  <div class="form-section">
+    <div class="checkbox-group" style="margin-bottom:10px;">
+      <input type="checkbox" id="cb-dsgvo">
+      <label class="checkbox-label" for="cb-dsgvo">
+        Ich stimme der <a href="#">Datenschutzerklärung</a> und dem <a href="#">Auftragsverarbeitungsvertrag (AVV)</a> gemäß Art. 28 DSGVO zu. *
+      </label>
+    </div>
+    <div class="checkbox-group">
+      <input type="checkbox" id="cb-agb">
+      <label class="checkbox-label" for="cb-agb">
+        Ich akzeptiere die <a href="#">Allgemeinen Geschäftsbedingungen</a> und bestätige, dass ich approbierter Arzt/Ärztin in Österreich bin. *
+      </label>
+    </div>
+  </div>
+
+  <button class="btn-submit" id="submitBtn" onclick="doRegister()">
+    <span id="btnText">🚀 Kostenlos 30 Tage testen</span>
+    <div class="spinner" id="spinner"></div>
+  </button>
+
+  <div class="trust-bar">
+    <div class="trust-item">🔒 Ende-zu-Ende verschlüsselt</div>
+    <div class="trust-item">🇦🇹 Server in Österreich</div>
+    <div class="trust-item">✓ Keine Kreditkarte nötig</div>
+    <div class="trust-item">📋 DSGVO-konform</div>
+  </div>
+
+</div>
+
+<!-- Success -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">🎉</div>
+  <div class="success-title">Vielen Dank!</div>
+  <div class="success-sub">Ihre Registrierung wurde erfolgreich übermittelt. Wir melden uns innerhalb von 24 Stunden bei Ihnen.</div>
+  <div class="success-steps">
+    <div class="success-step">
+      <div class="success-step-num">1</div>
+      <div class="success-step-text">Wir prüfen Ihre Daten und richten Ihre Ordination ein</div>
+    </div>
+    <div class="success-step">
+      <div class="success-step-num">2</div>
+      <div class="success-step-text">Sie erhalten Ihre Zugangsdaten per E-Mail</div>
+    </div>
+    <div class="success-step">
+      <div class="success-step-num">3</div>
+      <div class="success-step-text">In 5 Minuten ist Ihre Ordination live!</div>
+    </div>
+  </div>
+  <button class="success-btn" onclick="window.location.href='login.html'">Zum Login →</button>
+</div>
+
+<script>
+let selectedPlan = 'pro';
+
+function selectPlan(plan){
+  selectedPlan = plan;
+  document.querySelectorAll('.plan').forEach(p => p.classList.remove('selected'));
+  document.getElementById('plan-'+plan).classList.add('selected');
+}
+
+function doRegister(){
+  const vorname = document.getElementById('f-vorname').value.trim();
+  const nachname = document.getElementById('f-nachname').value.trim();
+  const fach = document.getElementById('f-fach').value;
+  const ordination = document.getElementById('f-ordination').value.trim();
+  const adresse = document.getElementById('f-adresse').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  const dsgvo = document.getElementById('cb-dsgvo').checked;
+  const agb = document.getElementById('cb-agb').checked;
+
+  const errorEl = document.getElementById('errorMsg');
+  const errorText = document.getElementById('errorText');
+  errorEl.classList.remove('show');
+
+  if(!vorname||!nachname||!fach||!ordination||!adresse||!email||!tel){
+    errorText.textContent = 'Bitte alle Pflichtfelder (*) ausfüllen.';
+    errorEl.classList.add('show');
+    return;
+  }
+  if(!email.includes('@')){
+    errorText.textContent = 'Bitte eine gültige E-Mail-Adresse eingeben.';
+    errorEl.classList.add('show');
+    return;
+  }
+  if(!dsgvo||!agb){
+    errorText.textContent = 'Bitte Datenschutz und AGB akzeptieren.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('btnText').style.display = 'none';
+  document.getElementById('spinner').style.display = 'block';
+  btn.classList.add('loading');
+
+  // Simulate API call
+  setTimeout(()=>{
+    document.getElementById('successOverlay').classList.add('show');
+  }, 1500);
+}
+</script>
+</body>
+</html>
