@@ -108,7 +108,7 @@ body{
 /* Success */
 .success-overlay{position:fixed;inset:0;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .success-overlay.show{opacity:1;pointer-events:all;}
-.success-icon{font-size:52px;margin-bottom:14px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.success-logo{width:96px;height:96px;object-fit:contain;border-radius:22px;margin-bottom:16px;display:block;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
 @keyframes popIn{from{transform:scale(0);}to{transform:scale(1);}}
 .success-title{font-size:20px;font-weight:800;color:var(--slate);}
 .success-sub{font-size:13px;color:var(--muted);margin-top:6px;}
@@ -197,7 +197,7 @@ body{
 
 <!-- Success -->
 <div class="success-overlay" id="successOverlay">
-  <div class="success-icon" id="successIcon">✓</div>
+  <img src="logo..jpeg" alt="Logo" class="success-logo">
   <div class="success-title" id="successTitle">Willkommen!</div>
   <div class="success-sub" id="successSub">Wird geladen...</div>
   <div class="success-bar"><div class="success-bar-fill" id="successBar"></div></div>
@@ -235,7 +235,6 @@ function doLogin(){
       return;
     }
     sessionStorage.setItem('smartordi_user',JSON.stringify({role:u==='dr.ahmed'?'arzt':'sekretaerin',name:acc.name}));
-    document.getElementById('successIcon').textContent=u==='dr.ahmed'?'‍':'‍';
     document.getElementById('successTitle').textContent='Willkommen, '+acc.name+'!';
     document.getElementById('successSub').textContent='Wird geladen...';
     document.getElementById('successOverlay').classList.add('show');
