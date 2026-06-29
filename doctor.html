@@ -748,12 +748,13 @@
   }
   .kartei-fs-backdrop.show{display:block;}
   .kartei-fullscreen-btn{
-    background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);
-    width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:16px;
-    display:flex;align-items:center;justify-content:center;transition:all 0.15s;
-    margin-right:4px;
+    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
+    color:rgba(255,255,255,0.85);width:30px;height:30px;border-radius:8px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:all 0.15s;margin-right:4px;padding:0;flex-shrink:0;
   }
-  .kartei-fullscreen-btn:hover{background:rgba(255,255,255,0.2);color:white;}
+  .kartei-fullscreen-btn:hover{background:rgba(255,255,255,0.22);color:white;border-color:rgba(255,255,255,0.35);}
+  .kartei-fullscreen-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 
   .kartei-header{
     padding:16px 18px;border-bottom:1px solid #e2e8f0;
@@ -1480,7 +1481,9 @@
           <div class="kartei-header-sub">smartordi.eu</div>
         </div>
       </div>
-      <button class="kartei-fullscreen-btn" id="karteiFullscreenBtn" onclick="toggleKarteiFullscreen()" title="Vollbild">⤢</button>
+      <button class="kartei-fullscreen-btn" id="karteiFullscreenBtn" onclick="toggleKarteiFullscreen()" title="Vollbild">
+        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
       <button class="kartei-close" onclick="toggleKartei()">✕</button>
     </div>
 
@@ -2918,7 +2921,7 @@ function toggleKartei(){
     panel.classList.remove('open','fullscreen');
     document.getElementById('karteiFsBackdrop').classList.remove('show');
     const fsBtn=document.getElementById('karteiFullscreenBtn');
-    if(fsBtn)fsBtn.textContent='⤢';
+    if(fsBtn)fsBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
     document.getElementById('karteiNavTab').classList.remove('active');
     document.querySelector('#appNavBar .nav-tab').classList.add('active');
     if(btn){btn.textContent='Kartei öffnen';btn.style.background='#f0fdfa';btn.style.color='#1e40af';}
@@ -2931,7 +2934,7 @@ function openKarteiFullscreen(navBtn){
   panel.classList.add('open','fullscreen');
   document.getElementById('karteiFsBackdrop').classList.add('show');
   const fsBtn=document.getElementById('karteiFullscreenBtn');
-  if(fsBtn)fsBtn.textContent='⊠';
+  if(fsBtn)fsBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
   const chatBtn=document.getElementById('karteiBtn');
   if(chatBtn){chatBtn.textContent='Kartei schließen';chatBtn.style.background='#1e40af';chatBtn.style.color='white';}
   document.querySelectorAll('#appNavBar .nav-tab').forEach(t=>t.classList.remove('active'));
@@ -2948,13 +2951,13 @@ function toggleKarteiFullscreen(){
     document.getElementById('karteiFsBackdrop').classList.remove('show');
     document.getElementById('karteiNavTab').classList.remove('active');
     document.querySelector('#appNavBar .nav-tab').classList.add('active');
-    if(fsBtn)fsBtn.textContent='⤢';
+    if(fsBtn)fsBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
   }else{
     panel.classList.add('fullscreen');
     document.getElementById('karteiFsBackdrop').classList.add('show');
     document.querySelectorAll('#appNavBar .nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById('karteiNavTab').classList.add('active');
-    if(fsBtn)fsBtn.textContent='⊠';
+    if(fsBtn)fsBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
   }
 }
 
@@ -2965,7 +2968,7 @@ function closeKarteiFullscreen(){
   document.getElementById('karteiNavTab').classList.remove('active');
   document.querySelector('#appNavBar .nav-tab').classList.add('active');
   const fsBtn=document.getElementById('karteiFullscreenBtn');
-  if(fsBtn)fsBtn.textContent='⤢';
+  if(fsBtn)fsBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
 }
 
 function setKarteiDate(){
