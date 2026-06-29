@@ -2816,11 +2816,13 @@ function saveSettings(){
   showToastSettings('✓ Einstellungen gespeichert');
 }
 
-function showToastSettings(msg){
-  // reuse existing toast or create one
-  const t = document.getElementById('toast');
-  if(t){ t.textContent=msg; t.className='toast success show'; setTimeout(()=>t.classList.remove('show'),2500); }
+function showToast(msg,type='success'){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
+  t.textContent=msg;t.className=`toast ${type} show`;
+  clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2800);
 }
+function showToastSettings(msg){showToast(msg,'success');}
 
 // Init canvas when settings view opens
 const _origSwitchViewSettings = switchView;
@@ -2924,5 +2926,14 @@ function closeModal() {
   document.getElementById('modalOverlay').style.display = 'none';
 }
 </script>
+
+<style>
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(24px) scale(0.92);background:linear-gradient(135deg,#0f766e,#0d9488);color:white;padding:12px 20px 12px 46px;border-radius:16px;font-size:13px;font-weight:600;z-index:9999;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;box-shadow:0 8px 28px rgba(13,148,136,0.4);opacity:0;pointer-events:none;}
+.toast::before{content:'';position:absolute;left:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;background:rgba(255,255,255,0.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E") no-repeat center/13px;border-radius:50%;}
+.toast.show{transform:translateX(-50%) translateY(0) scale(1);opacity:1;}
+.toast.success{background:linear-gradient(135deg,#0f766e,#0d9488);}
+.toast.error{background:linear-gradient(135deg,#991b1b,#dc2626);}
+</style>
+
 </body>
 </html>
