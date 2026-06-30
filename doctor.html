@@ -506,6 +506,43 @@
     <button class="nav-tab" onclick="switchView('dashboard',this)">Dashboard</button>
     <button class="nav-tab" onclick="switchView('settings',this)">Einstellungen</button>
   </div>
+  <!-- Desktop Sidebar Navigation (>=1024px) -->
+  <div id="desktopSidebar">
+    <div class="ds-nav">
+      <button class="ds-nav-item active" id="dsnav-clinic" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');switchView('clinic',this)">
+        <span class="ds-nav-icon">🏥</span>
+        <span class="ds-nav-label">Praxis</span>
+      </button>
+      <button class="ds-nav-item" id="dsnav-kartei" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');openKarteiFullscreen(this)">
+        <span class="ds-nav-icon">📋</span>
+        <span class="ds-nav-label">Kartei</span>
+      </button>
+      <button class="ds-nav-item" id="dsnav-patient" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');switchView('patient',this)">
+        <span class="ds-nav-icon">👤</span>
+        <span class="ds-nav-label">Patient</span>
+      </button>
+      <button class="ds-nav-item" id="dsnav-vertretung" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');switchView('vertretung',this)">
+        <span class="ds-nav-icon">🔄</span>
+        <span class="ds-nav-label">Vertretung</span>
+        <span class="ds-nav-badge">NEU</span>
+      </button>
+      <button class="ds-nav-item" id="dsnav-dashboard" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');switchView('dashboard',this)">
+        <span class="ds-nav-icon">📊</span>
+        <span class="ds-nav-label">Dashboard</span>
+      </button>
+      <button class="ds-nav-item" id="dsnav-settings" onclick="document.querySelectorAll('.ds-nav-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');switchView('settings',this)">
+        <span class="ds-nav-icon">⚙️</span>
+        <span class="ds-nav-label">Einstellungen</span>
+      </button>
+    </div>
+    <div class="ds-profile">
+      <div class="ds-profile-avatar">S</div>
+      <div>
+        <div class="ds-profile-name" id="dsProfileName">Dr. Sarah Ahmed</div>
+        <div class="ds-profile-role">Ärztin · Smartordi</div>
+      </div>
+    </div>
+  </div>
   <div>
 <!DOCTYPE html>
 <html lang="de" dir="ltr">
@@ -513,767 +550,568 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smartordi.chat.eu — Vorschau</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --teal:#0d9488;--teal-light:#14b8a6;--teal-dark:#0f766e;--teal-bg:#f0fdfa;
-    --slate:#0f172a;--slate-mid:#334155;--slate-soft:#64748b;--border:#e2e8f0;
-    --white:#ffffff;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
-    --austria-red:#ED2939;--purple:#8b5cf6;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Outfit',sans-serif;background:#f1f5f9;color:#0f172a;min-height:100vh;}
+/* ══ DESIGN SYSTEM ══ */
+:root {
+  --primary:#1e40af;--primary-dark:#1d4ed8;--primary-light:#3b82f6;
+  --bg:#f8fafc;--surface:#ffffff;--border:#e8edf3;
+  --text-1:#0f172a;--text-2:#64748b;--text-3:#94a3b8;
+  --success:#16a34a;--warning:#f59e0b;--danger:#dc2626;--info:#0891b2;--purple:#7c3aed;
+  --teal:#0d9488;--teal-light:#14b8a6;--teal-dark:#0f766e;--teal-bg:#f0fdfa;
+  --slate:#0f172a;--slate-mid:#334155;--slate-soft:#64748b;--border-old:#e2e8f0;
+  --white:#ffffff;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--austria-red:#ED2939;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','DM Sans',sans-serif;background:var(--bg);color:var(--text-1);min-height:100vh;-webkit-font-smoothing:antialiased;}
 
-  /* GDPR */
-  .gdpr-banner{
-    position:fixed;bottom:0;left:0;right:0;background:#0f172a;color:white;
-    padding:14px 24px;z-index:999;display:flex;align-items:center;gap:16px;
-    font-size:13px;box-shadow:0 -4px 20px rgba(0,0,0,0.2);
-  }
-  .gdpr-text{flex:1;line-height:1.5;}
-  .gdpr-text a{color:#eff6ff;text-decoration:underline;cursor:pointer;}
-  .gdpr-btns{display:flex;gap:8px;flex-shrink:0;}
-  .gdpr-accept{background:#1e40af;color:white;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;}
-  .gdpr-decline{background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;}
+/* ══ GDPR ══ */
+.gdpr-banner{position:fixed;bottom:0;left:0;right:0;background:#0f172a;color:white;padding:14px 24px;z-index:999;display:flex;align-items:center;gap:16px;font-size:13px;box-shadow:0 -4px 20px rgba(0,0,0,0.2);}
+.gdpr-text{flex:1;line-height:1.5;}
+.gdpr-text a{color:#eff6ff;text-decoration:underline;cursor:pointer;}
+.gdpr-btns{display:flex;gap:8px;flex-shrink:0;}
+.gdpr-accept{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(30,64,175,0.3);}
+.gdpr-decline{background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;}
 
-  /* NAV */
-  .top-nav{background:white;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 8px rgba(0,0,0,0.06);}
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-  .logo-text{font-size:16px;font-weight:800;color:#0f172a;letter-spacing:-0.5px;}
-  .logo-text span{color:#1e40af;}
-  .nav-tabs{display:flex;gap:6px;background:transparent;padding:4px;border-radius:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
-  .nav-tabs::-webkit-scrollbar{display:none;}
-  .nav-tab{padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all 0.2s;color:#64748b;background:#f1f5f9;white-space:nowrap;}
-  .nav-tab.active{background:#1e40af;color:white;font-weight:700;}
-  .nav-tab.vertretung-tab{position:relative;}
-  .nav-tab.vertretung-tab .new-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:white;font-size:9px;font-weight:800;padding:2px 5px;border-radius:8px;}
-  .lang-switcher{display:flex;gap:4px;}
-  .lang-btn{padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:white;color:#64748b;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all 0.2s;}
-  .lang-btn.active{background:#1e40af;color:white;border-color:#1e40af;}
+/* ══ TOP NAV ══ */
+.top-nav{background:white;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,0.05);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo-text{font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-0.5px;}
+.logo-text span{color:#1e40af;}
 
-  /* VIEWS */
-  .view{display:none;}
-  .view.active{display:flex;height:calc(100vh - 90px);}
-  @supports(padding-bottom: env(safe-area-inset-bottom)){
-    .view.active{height:calc(100vh - 90px - env(safe-area-inset-bottom));}
-  }
+/* ══ NAV TABS ══ */
+.nav-tabs{display:flex;gap:4px;background:transparent;padding:4px;border-radius:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all 0.18s;color:var(--text-2);background:transparent;white-space:nowrap;letter-spacing:-0.1px;}
+.nav-tab:hover{background:#eff6ff;color:#1e40af;}
+.nav-tab.active{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;font-weight:700;box-shadow:0 2px 8px rgba(30,64,175,0.3);}
+.nav-tab.vertretung-tab{position:relative;}
+.nav-tab.vertretung-tab .new-badge{position:absolute;top:-4px;right:-4px;background:#dc2626;color:white;font-size:9px;font-weight:800;padding:2px 5px;border-radius:8px;}
+.lang-switcher{display:flex;gap:4px;}
+.lang-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:white;color:var(--text-2);cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all 0.2s;}
+.lang-btn.active{background:#1e40af;color:white;border-color:#1e40af;}
 
-  /* SIDEBAR */
-  .clinic-sidebar{width:300px;background:#fafbfc;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;flex-shrink:0;}
-  .sidebar-header{padding:16px;border-bottom:1px solid #e2e8f0;background:white;}
-  .sidebar-title{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-  .online-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:6px;}
-  .search-box{position:relative;}
-  .search-box input{width:100%;padding:8px 12px 8px 36px;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:13px;background:#f8fafc;color:#0f172a;outline:none;transition:border 0.2s;}
-  .search-box input:focus{border-color:#1e40af;}
-  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#64748b;font-size:14px;}
-  .patient-list{flex:1;overflow-y:auto;}
-  .patient-item{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background 0.15s;border-bottom:1px solid #f1f5f9;position:relative;}
-  .patient-item:hover{background:#eff6ff;}
-  .patient-item.active{background:#eff6ff;border-left:3px solid #1e40af;}
-  .patient-item.transferred{border-left:3px solid #f59e0b;}
-  .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:white;flex-shrink:0;position:relative;}
-  .avatar-status{width:10px;height:10px;border-radius:50%;border:2px solid white;position:absolute;bottom:0;right:0;}
-  .patient-info{flex:1;min-width:0;}
-  .patient-name{font-size:14px;font-weight:600;color:#0f172a;margin-bottom:3px;}
-  .patient-preview{font-size:12px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .patient-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-  .patient-time{font-size:11px;color:#64748b;}
-  .unread-badge{background:#1e40af;color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;}
-  .transfer-badge{background:#f59e0b;color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;}
+/* ══ DESKTOP SIDEBAR ══ */
+#desktopSidebar{display:none;position:fixed;top:48px;left:0;bottom:0;width:220px;background:white;border-right:1px solid var(--border);flex-direction:column;z-index:198;box-shadow:2px 0 12px rgba(0,0,0,0.04);}
+.ds-nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.ds-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;border-left:3px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:var(--text-2);background:transparent;text-align:left;width:100%;transition:all 0.15s;position:relative;white-space:nowrap;}
+.ds-nav-item:hover{background:#eff6ff;color:#1e40af;}
+.ds-nav-item.active{background:#eff6ff;color:#1e40af;font-weight:700;border-left-color:#1e40af;}
+.ds-nav-icon{font-size:18px;width:22px;text-align:center;flex-shrink:0;}
+.ds-nav-label{flex:1;}
+.ds-nav-badge{background:#dc2626;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;}
+.ds-profile{padding:14px 12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.ds-profile-avatar{width:36px;height:36px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:800;flex-shrink:0;}
+.ds-profile-name{font-size:12px;font-weight:800;color:var(--text-1);}
+.ds-profile-role{font-size:11px;color:var(--text-2);margin-top:1px;}
 
-  /* CHAT */
-  .chat-area{flex:1;display:flex;flex-direction:column;background:#f8fafc;}
-  .chat-header{background:white;padding:12px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
-  .chat-patient-name{font-size:15px;font-weight:700;color:#0f172a;}
-  .chat-patient-sub{font-size:12px;color:#64748b;}
-  .chat-patient-status{font-size:12px;color:#1e40af;font-weight:500;}
-  .chat-actions{margin-left:auto;display:flex;gap:8px;}
-  .action-btn{height:36px;padding:0 12px;border-radius:8px;border:1px solid #e2e8f0;background:white;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;transition:all 0.2s;color:#475569;font-family:inherit;font-weight:500;}
-  .action-btn:hover{background:#eff6ff;border-color:#1e40af;color:#1e40af;}
-  .action-btn.call{background:linear-gradient(135deg,#1e40af,#1d4ed8);border-color:#1e40af;color:white;}
-  .action-btn.call:hover{opacity:0.9;}
-  .action-btn.transfer-btn{background:#fff7ed;border-color:#f59e0b;color:#d97706;}
-  .action-btn.transfer-btn:hover{background:#fef3c7;}
+@media(min-width:1024px){
+  #desktopSidebar{display:flex;}
+  #appNavBar{display:none!important;}
+  .app-wrapper.active{padding-top:48px;padding-left:220px;}
+  .app-wrapper.active .view.active{height:calc(100vh - 48px);}
+  .kartei-panel.fullscreen{left:220px!important;}
+}
 
-  /* PATIENT PANEL */
-  .patient-panel{width:260px;background:white;border-left:1px solid #e2e8f0;padding:16px;overflow-y:auto;flex-shrink:0;}
-  .panel-section{margin-bottom:20px;}
-  .panel-section-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
-  .info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px;}
-  .info-label{color:#64748b;}
-  .info-value{font-weight:500;color:#0f172a;}
-  .tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:2px;}
-  .tag-blue{background:#dbeafe;color:#1d4ed8;}
-  .tag-red{background:#fee2e2;color:#dc2626;}
-  .tag-green{background:#dcfce7;color:#16a34a;}
-  .tag-amber{background:#fef3c7;color:#d97706;}
-  .tag-purple{background:#ede9fe;color:#7c3aed;}
-  .appt-card{background:#eff6ff;border:1px solid #99f6e4;border-radius:8px;padding:10px;font-size:12px;margin-bottom:8px;}
-  .appt-date{font-weight:700;color:#1d4ed8;margin-bottom:2px;}
-  .appt-type{color:#1e293b;}
+/* ══ VIEWS ══ */
+.view{display:none;}
+.view.active{display:flex;height:calc(100vh - 90px);}
+@supports(padding-bottom:env(safe-area-inset-bottom)){.view.active{height:calc(100vh - 90px - env(safe-area-inset-bottom));}}
 
-  /* MESSAGES */
-  .messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
-  .msg-row{display:flex;align-items:flex-end;gap:8px;}
-  .msg-row.out{flex-direction:row-reverse;}
-  .msg-bubble{max-width:65%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;position:relative;}
-  .msg-row.in .msg-bubble{background:white;color:#0f172a;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
-  .msg-row.out .msg-bubble{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;border-bottom-right-radius:4px;}
-  .msg-time{font-size:10px;opacity:0.65;margin-top:4px;display:block;}
-  .msg-row.out .msg-time{text-align:right;}
-  .voice-msg{display:flex;align-items:center;gap:10px;padding:8px 12px;min-width:200px;}
-  .play-btn{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
-  .msg-row.out .play-btn{background:rgba(255,255,255,0.2);color:white;}
-  .msg-row.in .play-btn{background:#1e40af;color:white;}
-  .voice-wave{flex:1;height:28px;display:flex;align-items:center;gap:2px;}
-  .wave-bar{width:3px;border-radius:2px;animation:wave 1.2s ease-in-out infinite;}
-  .msg-row.out .wave-bar{background:rgba(255,255,255,0.6);}
-  .msg-row.in .wave-bar{background:#1e40af;}
-  @keyframes wave{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
-  .voice-duration{font-size:11px;opacity:0.7;font-family:'IBM Plex Mono',monospace;}
-  .date-divider{text-align:center;font-size:12px;color:#64748b;margin:8px 0;display:flex;align-items:center;gap:12px;}
-  .date-divider::before,.date-divider::after{content:'';flex:1;height:1px;background:#e2e8f0;}
-  .system-msg{text-align:center;font-size:12px;color:#64748b;background:white;border:1px solid #e2e8f0;border-radius:20px;padding:4px 14px;align-self:center;}
-  .system-msg.transfer{background:#fff7ed;border-color:#f59e0b;color:#92400e;}
-  .doc-msg{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.15);border-radius:10px;border:1px solid rgba(255,255,255,0.2);max-width:240px;}
-  .msg-row.in .doc-msg{background:#f8fafc;border-color:#e2e8f0;}
-  .doc-icon{font-size:24px;flex-shrink:0;}
-  .doc-info{flex:1;}
-  .doc-name{font-size:13px;font-weight:600;}
-  .doc-size{font-size:11px;opacity:0.7;}
+/* ══ PATIENT SIDEBAR ══ */
+.clinic-sidebar{width:300px;background:#fafbfc;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.sidebar-header{padding:16px;border-bottom:1px solid var(--border);background:white;}
+.sidebar-title{font-size:15px;font-weight:800;color:var(--text-1);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-0.3px;}
+.online-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:6px;box-shadow:0 0 0 3px rgba(34,197,94,0.2);}
+.search-box{position:relative;}
+.search-box input{width:100%;padding:9px 14px 9px 38px;border:1.5px solid var(--border);border-radius:22px;font-family:inherit;font-size:13px;background:#f1f5f9;color:var(--text-1);outline:none;transition:all 0.2s;box-shadow:inset 0 1px 3px rgba(0,0,0,0.06);}
+.search-box input:focus{border-color:#1e40af;background:white;box-shadow:0 0 0 3px rgba(30,64,175,0.1);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px;}
+.patient-list{flex:1;overflow-y:auto;}
+.patient-item{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background 0.15s;border-bottom:1px solid #f1f5f9;position:relative;}
+.patient-item:hover{background:#eff6ff;}
+.patient-item.active{background:#eff6ff;border-left:3px solid #1e40af;}
+.patient-item.transferred{border-left:3px solid #f59e0b;}
+.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:white;flex-shrink:0;position:relative;}
+.avatar-status{width:10px;height:10px;border-radius:50%;border:2px solid white;position:absolute;bottom:0;right:0;}
+.patient-info{flex:1;min-width:0;}
+.patient-name{font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:3px;letter-spacing:-0.2px;}
+.patient-preview{font-size:12px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.patient-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.patient-time{font-size:11px;color:var(--text-3);}
+.unread-badge{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center;box-shadow:0 2px 6px rgba(30,64,175,0.35);}
+.transfer-badge{background:#f59e0b;color:white;font-size:10px;font-weight:800;padding:2px 6px;border-radius:10px;}
 
-  /* INPUT */
-  .chat-input-area{background:white;border-top:1px solid #e2e8f0;padding:12px 16px;}
-  .input-row{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:6px 8px;transition:border 0.2s;}
-  .input-row:focus-within{border-color:#1e40af;}
-  .input-btn{width:34px;height:34px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#64748b;transition:all 0.15s;flex-shrink:0;}
-  .input-btn:hover{background:#eff6ff;color:#1e40af;}
-  .msg-input{flex:1;border:none;background:transparent;font-family:inherit;font-size:14px;color:#0f172a;outline:none;padding:4px;resize:none;height:34px;}
-  .send-btn{width:36px;height:36px;border-radius:9px;border:none;background:#1e40af;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.15s;flex-shrink:0;}
-  .send-btn:hover{background:#1d4ed8;transform:scale(1.05);}
+/* ══ CHAT ══ */
+.chat-area{flex:1;display:flex;flex-direction:column;background:#f8fafc;}
+.chat-header{background:white;padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.chat-patient-name{font-size:15px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;}
+.chat-patient-sub{font-size:12px;color:var(--text-2);}
+.chat-patient-status{font-size:12px;color:#1e40af;font-weight:600;}
+.chat-actions{margin-left:auto;display:flex;gap:8px;}
+.action-btn{height:36px;padding:0 14px;border-radius:9px;border:1.5px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;transition:all 0.18s;color:var(--text-2);font-family:inherit;font-weight:600;}
+.action-btn:hover{background:#eff6ff;border-color:#1e40af;color:#1e40af;transform:translateY(-1px);}
+.action-btn.call{background:linear-gradient(135deg,#1e40af,#1d4ed8);border-color:#1e40af;color:white;box-shadow:0 2px 8px rgba(30,64,175,0.35);}
+.action-btn.call:hover{opacity:0.9;transform:translateY(-1px);}
+.action-btn.transfer-btn{background:#fff7ed;border-color:#f59e0b;color:#d97706;}
+.action-btn.transfer-btn:hover{background:#fef3c7;transform:translateY(-1px);}
 
-  /* PATIENT VIEW */
-  .patient-view-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#e2e8f0;padding:20px;}
-  .phone-frame{width:375px;height:calc(100vh - 96px);max-height:750px;background:white;border-radius:40px;box-shadow:0 25px 80px rgba(0,0,0,0.18),0 0 0 8px #1e293b;overflow:hidden;display:flex;flex-direction:column;position:relative;}
-  .phone-status{background:#0f172a;padding:12px 24px 8px;display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600;color:white;flex-shrink:0;}
-  .phone-chat-header{background:#1e40af;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-  .phone-back{color:white;font-size:18px;cursor:pointer;}
-  .phone-clinic-info{flex:1;}
-  .phone-clinic-name{font-size:15px;font-weight:700;color:white;}
-  .phone-clinic-status{font-size:11px;color:rgba(255,255,255,0.8);}
-  .phone-call-btn{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:white;border:none;}
-  .phone-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#f8fafc;}
-  .phone-input-area{background:white;border-top:1px solid #e2e8f0;padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .phone-input{flex:1;border:1px solid #e2e8f0;border-radius:20px;padding:8px 14px;font-family:inherit;font-size:13px;outline:none;background:#f8fafc;}
-  .phone-input:focus{border-color:#1e40af;}
-  .phone-send{width:36px;height:36px;background:#1e40af;border:none;border-radius:50%;color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .phone-mic{width:36px;height:36px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:50%;color:#64748b;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+/* ══ PATIENT PANEL ══ */
+.patient-panel{width:260px;background:white;border-left:1px solid var(--border);padding:16px;overflow-y:auto;flex-shrink:0;}
+.panel-section{margin-bottom:20px;}
+.panel-section-title{font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px;}
+.info-label{color:var(--text-2);}
+.info-value{font-weight:600;color:var(--text-1);}
+.tag{display:inline-block;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700;margin:2px;}
+.tag-blue{background:#dbeafe;color:#1d4ed8;}
+.tag-red{background:#fee2e2;color:#dc2626;}
+.tag-green{background:#dcfce7;color:#16a34a;}
+.tag-amber{background:#fef3c7;color:#d97706;}
+.tag-purple{background:#ede9fe;color:#7c3aed;}
+.appt-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;font-size:12px;margin-bottom:8px;}
+.appt-date{font-weight:800;color:#1d4ed8;margin-bottom:2px;}
+.appt-type{color:var(--text-1);}
 
-  /* ══ VERTRETUNG VIEW ══ */
-  .vertretung-layout{flex:1;display:flex;overflow:hidden;}
-  .vertretung-main{flex:1;overflow-y:auto;padding:28px;background:#f8fafc;}
-  .vertretung-title{font-size:22px;font-weight:800;color:#0f172a;margin-bottom:6px;}
-  .vertretung-subtitle{font-size:13px;color:#64748b;margin-bottom:24px;}
+/* ══ MESSAGES ══ */
+.messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.msg-row{display:flex;align-items:flex-end;gap:8px;}
+.msg-row.out{flex-direction:row-reverse;}
+.msg-bubble{max-width:65%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.55;position:relative;}
+.msg-row.in .msg-bubble{background:white;color:var(--text-1);border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.msg-row.out .msg-bubble{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;border-bottom-right-radius:4px;box-shadow:0 4px 12px rgba(30,64,175,0.35);}
+.msg-time{font-size:10px;opacity:0.65;margin-top:4px;display:block;}
+.msg-row.out .msg-time{text-align:right;}
+.voice-msg{display:flex;align-items:center;gap:10px;padding:8px 12px;min-width:200px;}
+.play-btn{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.msg-row.out .play-btn{background:rgba(255,255,255,0.2);color:white;}
+.msg-row.in .play-btn{background:#1e40af;color:white;}
+.voice-wave{flex:1;height:28px;display:flex;align-items:center;gap:2px;}
+.wave-bar{width:3px;border-radius:2px;animation:wave 1.2s ease-in-out infinite;}
+.msg-row.out .wave-bar{background:rgba(255,255,255,0.6);}
+.msg-row.in .wave-bar{background:#1e40af;}
+@keyframes wave{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+.voice-duration{font-size:11px;opacity:0.7;font-family:'IBM Plex Mono',monospace;}
+.date-divider{text-align:center;font-size:12px;color:var(--text-2);margin:8px 0;display:flex;align-items:center;gap:12px;}
+.date-divider::before,.date-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.system-msg{text-align:center;font-size:12px;color:var(--text-2);background:white;border:1px solid var(--border);border-radius:20px;padding:4px 14px;align-self:center;}
+.system-msg.transfer{background:#fff7ed;border-color:#f59e0b;color:#92400e;}
+.doc-msg{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.15);border-radius:10px;border:1px solid rgba(255,255,255,0.2);max-width:240px;}
+.msg-row.in .doc-msg{background:#f8fafc;border-color:var(--border);}
+.doc-icon{font-size:24px;flex-shrink:0;}
+.doc-info{flex:1;}
+.doc-name{font-size:13px;font-weight:700;}
+.doc-size{font-size:11px;opacity:0.7;}
 
-  .vacation-card{background:white;border-radius:16px;border:1px solid #e2e8f0;padding:24px;margin-bottom:24px;}
-  .vacation-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-  .vacation-title{font-size:16px;font-weight:700;color:#0f172a;}
-  .status-pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;}
-  .status-active{background:#dcfce7;color:#16a34a;}
-  .status-planned{background:#fef3c7;color:#d97706;}
+/* ══ CHAT INPUT ══ */
+.chat-input-area{background:white;border-top:1px solid var(--border);padding:12px 16px;}
+.input-row{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1.5px solid var(--border);border-radius:14px;padding:6px 8px;transition:all 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.input-row:focus-within{border-color:#1e40af;background:white;box-shadow:0 0 0 3px rgba(30,64,175,0.1);}
+.input-btn{width:34px;height:34px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-3);transition:all 0.15s;flex-shrink:0;}
+.input-btn:hover{background:#eff6ff;color:#1e40af;}
+.msg-input{flex:1;border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--text-1);outline:none;padding:4px;resize:none;height:34px;}
+.send-btn{width:36px;height:36px;border-radius:10px;border:none;background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.15s;flex-shrink:0;box-shadow:0 2px 8px rgba(30,64,175,0.35);}
+.send-btn:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(30,64,175,0.45);}
 
-  .vacation-dates{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;}
-  .date-box{text-align:center;flex:1;}
-  .date-label{font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
-  .date-value{font-size:18px;font-weight:800;color:#0f172a;}
-  .date-arrow{font-size:20px;color:#64748b;}
+/* ══ PATIENT VIEW ══ */
+.patient-view-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#e2e8f0;padding:20px;}
+.phone-frame{width:375px;height:calc(100vh - 96px);max-height:750px;background:white;border-radius:40px;box-shadow:0 25px 80px rgba(0,0,0,0.18),0 0 0 8px #1e293b;overflow:hidden;display:flex;flex-direction:column;position:relative;}
+.phone-status{background:#0f172a;padding:12px 24px 8px;display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600;color:white;flex-shrink:0;}
+.phone-chat-header{background:linear-gradient(135deg,#1e40af,#1d4ed8);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.phone-back{color:white;font-size:18px;cursor:pointer;}
+.phone-clinic-info{flex:1;}
+.phone-clinic-name{font-size:15px;font-weight:800;color:white;}
+.phone-clinic-status{font-size:11px;color:rgba(255,255,255,0.8);}
+.phone-call-btn{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:white;border:none;}
+.phone-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#f8fafc;}
+.phone-input-area{background:white;border-top:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.phone-input{flex:1;border:1.5px solid var(--border);border-radius:22px;padding:8px 14px;font-family:inherit;font-size:13px;outline:none;background:#f8fafc;}
+.phone-input:focus{border-color:#1e40af;background:white;}
+.phone-send{width:36px;height:36px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border:none;border-radius:50%;color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.phone-mic{width:36px;height:36px;background:#f1f5f9;border:1px solid var(--border);border-radius:50%;color:var(--text-2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-  .vertretung-doctor{display:flex;align-items:center;gap:14px;padding:16px;background:#eff6ff;border:1px solid #99f6e4;border-radius:12px;margin-bottom:16px;}
-  .doc-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;}
-  .doc-info{flex:1;}
-  .doc-name{font-size:15px;font-weight:700;color:#0f172a;}
-  .doc-details{font-size:12px;color:#64748b;margin-top:2px;}
-  .doc-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#1e40af;}
+/* ══ VERTRETUNG ══ */
+.vertretung-layout{flex:1;display:flex;overflow:hidden;}
+.vertretung-main{flex:1;overflow-y:auto;padding:28px;background:#f8fafc;}
+.vertretung-title{font-size:24px;font-weight:800;color:var(--text-1);margin-bottom:6px;letter-spacing:-0.5px;}
+.vertretung-subtitle{font-size:13px;color:var(--text-2);margin-bottom:24px;}
+.vacation-card{background:white;border-radius:20px;border:1px solid var(--border);padding:24px;margin-bottom:24px;box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+.vacation-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.vacation-title{font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;}
+.status-pill{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+.status-active{background:#dcfce7;color:#16a34a;}
+.status-planned{background:#fef3c7;color:#d97706;}
+.vacation-dates{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:#f8fafc;border-radius:14px;border:1px solid var(--border);}
+.date-box{text-align:center;flex:1;}
+.date-label{font-size:11px;color:var(--text-2);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.date-value{font-size:18px;font-weight:800;color:var(--text-1);font-variant-numeric:tabular-nums;}
+.date-arrow{font-size:20px;color:var(--text-3);}
+.vertretung-doctor{display:flex;align-items:center;gap:14px;padding:16px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;margin-bottom:16px;}
+.doc-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;flex-shrink:0;}
+.doc-info{flex:1;}
+.doc-name{font-size:15px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;}
+.doc-details{font-size:12px;color:var(--text-2);margin-top:2px;}
+.doc-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#1e40af;}
+.transfer-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.transfer-stat{background:#f8fafc;border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border);transition:transform 0.2s;}
+.transfer-stat:hover{transform:translateY(-2px);}
+.transfer-stat-value{font-size:24px;font-weight:800;color:var(--text-1);font-variant-numeric:tabular-nums;}
+.transfer-stat-label{font-size:11px;color:var(--text-2);margin-top:2px;font-weight:500;}
+.patient-transfer-list{background:white;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,0.05);}
+.list-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.list-title{font-size:14px;font-weight:800;color:var(--text-1);letter-spacing:-0.2px;}
+.list-action{font-size:12px;color:#1e40af;cursor:pointer;font-weight:700;background:#eff6ff;padding:6px 12px;border-radius:8px;border:none;font-family:inherit;}
+.transfer-patient-item{padding:14px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:12px;transition:background 0.15s;}
+.transfer-patient-item:hover{background:#f8fafc;}
+.transfer-patient-item:last-child{border-bottom:none;}
+.tp-info{flex:1;}
+.tp-name{font-size:14px;font-weight:700;color:var(--text-1);}
+.tp-details{font-size:12px;color:var(--text-2);margin-top:2px;}
+.tp-status{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;}
+.tp-status.sent{background:#dcfce7;color:#16a34a;}
+.tp-status.pending{background:#fef3c7;color:#d97706;}
+.tp-status.accepted{background:#dbeafe;color:#1d4ed8;}
+.network-map{background:white;border-radius:20px;border:1px solid var(--border);padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,0.05);}
+.network-title{font-size:14px;font-weight:800;color:var(--text-1);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.network-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.clinic-node{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
+.clinic-node:hover{border-color:#1e40af;background:#eff6ff;transform:translateY(-2px);}
+.clinic-node.current{border-color:#1e40af;background:#eff6ff;border-width:2px;}
+.clinic-node.partner{border-color:#bfdbfe;}
+.clinic-node-icon{font-size:24px;margin-bottom:6px;}
+.clinic-node-name{font-size:12px;font-weight:700;color:var(--text-1);}
+.clinic-node-detail{font-size:10px;color:var(--text-2);margin-top:2px;}
+.clinic-node-badge{position:absolute;top:-6px;right:-6px;background:#1e40af;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;}
 
-  .transfer-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
-  .transfer-stat{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;border:1px solid #e2e8f0;}
-  .transfer-stat-value{font-size:24px;font-weight:800;color:#0f172a;}
-  .transfer-stat-label{font-size:11px;color:#64748b;margin-top:2px;}
+/* ══ KARTEI PANEL ══ */
+.kartei-panel{width:0;overflow:hidden;background:white;border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;transition:width 0.3s cubic-bezier(0.4,0,0.2,1);}
+.kartei-panel.open{width:380px;}
+.kartei-panel.fullscreen{position:fixed!important;inset:0!important;width:100%!important;z-index:500!important;transform:none!important;border-left:none!important;border-radius:0;}
+.kartei-fs-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:499;cursor:pointer;}
+.kartei-fs-backdrop.show{display:block;}
+.kartei-fullscreen-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;margin-right:4px;padding:0;flex-shrink:0;}
+.kartei-fullscreen-btn:hover{background:rgba(255,255,255,0.22);color:white;border-color:rgba(255,255,255,0.35);}
+.kartei-fullscreen-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.kartei-header{padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#1e40af,#1d4ed8);flex-shrink:0;}
+.kartei-header-left{display:flex;align-items:center;gap:10px;}
+.kartei-header-icon{width:34px;height:34px;background:rgba(255,255,255,0.18);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.kartei-header-title{font-size:14px;font-weight:800;color:white;letter-spacing:-0.2px;}
+.kartei-header-sub{font-size:11px;color:rgba(255,255,255,0.65);margin-top:1px;}
+.kartei-close{background:rgba(255,255,255,0.12);border:none;color:rgba(255,255,255,0.75);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.kartei-close:hover{background:rgba(255,255,255,0.22);color:white;}
+.kartei-patient-bar{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:#fafbfc;flex-shrink:0;}
+.kartei-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:white;flex-shrink:0;}
+.kartei-patient-name{font-size:13px;font-weight:800;color:var(--text-1);}
+.kartei-patient-meta{font-size:11px;color:var(--text-2);margin-top:1px;}
+.kartei-tabs{display:flex;background:white;flex-shrink:0;overflow-x:auto;overflow-y:hidden;border-bottom:1px solid var(--border);padding:8px;gap:4px;scrollbar-width:none;-ms-overflow-style:none;}
+.kartei-tabs::-webkit-scrollbar{display:none;}
+.kartei-tab{flex-shrink:0;padding:7px 14px;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;color:var(--text-2);border-radius:8px;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.kartei-tab.active{color:white!important;background:linear-gradient(135deg,#1e40af,#1d4ed8);font-weight:700;box-shadow:0 2px 6px rgba(30,64,175,0.3);}
+.kartei-tab:hover:not(.active){color:#1e40af!important;background:#eff6ff;}
+.kartei-body{flex:1;overflow-y:auto;padding:0;}
 
-  .patient-transfer-list{background:white;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:24px;}
-  .list-header{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;}
-  .list-title{font-size:14px;font-weight:700;color:#0f172a;}
-  .list-action{font-size:12px;color:#1e40af;cursor:pointer;font-weight:600;background:#eff6ff;padding:6px 12px;border-radius:8px;border:none;font-family:inherit;}
+/* Filter Bar */
+.k-filter-bar{padding:10px 14px;border-bottom:1px solid var(--border);background:#fafbfc;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;z-index:5;}
+.k-search-wrap{position:relative;}
+.k-search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;}
+.k-search-input{width:100%;padding:7px 10px 7px 28px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;color:var(--text-1);outline:none;background:white;transition:border-color 0.15s;}
+.k-search-input:focus{border-color:#1e40af;box-shadow:0 0 0 3px rgba(30,64,175,0.1);}
+.k-year-pills{display:flex;gap:5px;flex-wrap:wrap;}
+.k-year-pill{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;transition:all 0.15s;font-family:inherit;}
+.k-year-pill.active{background:#1e40af;border-color:#1e40af;color:white;}
+.k-year-pill:hover:not(.active){border-color:#1e40af;color:#1e40af;}
+.k-visit-count{font-size:11px;color:var(--text-2);font-weight:600;}
+.k-empty-state{text-align:center;padding:32px 16px;color:var(--text-2);font-size:13px;}
+.k-empty-icon{font-size:32px;margin-bottom:8px;}
 
-  .transfer-patient-item{padding:14px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:12px;transition:background 0.15s;}
-  .transfer-patient-item:hover{background:#f8fafc;}
-  .transfer-patient-item:last-child{border-bottom:none;}
-  .tp-info{flex:1;}
-  .tp-name{font-size:14px;font-weight:600;color:#0f172a;}
-  .tp-details{font-size:12px;color:#64748b;margin-top:2px;}
-  .tp-status{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;}
-  .tp-status.sent{background:#dcfce7;color:#16a34a;}
-  .tp-status.pending{background:#fef3c7;color:#d97706;}
-  .tp-status.accepted{background:#dbeafe;color:#1d4ed8;}
+/* Kartei Sections */
+.k-section{background:white;border-left:4px solid #1e40af;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin:10px;padding:16px;}
+.k-section-title{font-size:11px;font-weight:700;color:var(--text-1);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.k-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:12px;}
+.k-label{color:var(--text-2);}
+.k-value{font-weight:700;color:var(--text-1);text-align:right;max-width:60%;}
+.k-alert{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:8px 12px;font-size:11px;font-weight:600;color:#92400e;display:flex;align-items:center;gap:6px;margin-top:8px;}
 
-  .network-map{background:white;border-radius:16px;border:1px solid #e2e8f0;padding:24px;margin-bottom:24px;}
-  .network-title{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-  .network-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-  .clinic-node{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
-  .clinic-node:hover{border-color:#1e40af;background:#eff6ff;}
-  .clinic-node.current{border-color:#1e40af;background:#eff6ff;border-width:2px;}
-  .clinic-node.partner{border-color:#99f6e4;}
-  .clinic-node-icon{font-size:24px;margin-bottom:6px;}
-  .clinic-node-name{font-size:12px;font-weight:700;color:#0f172a;}
-  .clinic-node-detail{font-size:10px;color:#64748b;margin-top:2px;}
-  .clinic-node-badge{position:absolute;top:-6px;right:-6px;background:#1e40af;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;}
+/* Kartei Visits */
+.k-visit{background:white;border-left:4px solid #1e40af;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin:10px;padding:14px;cursor:pointer;transition:all 0.15s;}
+.k-visit:hover{background:#f8fafc;box-shadow:0 4px 20px rgba(0,0,0,0.1);transform:translateY(-1px);}
+.k-visit-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.k-visit-date{font-size:10px;font-weight:700;color:white;background:#1e40af;padding:3px 8px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
+.k-visit-type{font-size:11px;font-weight:700;color:var(--text-1);background:#f1f5f9;padding:3px 8px;border-radius:5px;}
+.k-visit-diag{font-size:12px;font-weight:800;color:var(--text-1);margin-bottom:4px;}
+.k-visit-notes{font-size:11px;color:var(--text-2);line-height:1.5;}
+.k-visit-therapy{font-size:11px;font-weight:700;color:#1d4ed8;background:#eff6ff;padding:4px 8px;border-radius:6px;margin-top:6px;display:inline-block;}
 
-  /* ══ KARTEI PANEL ══ */
-  .kartei-panel{
-    width:0;overflow:hidden;background:white;border-left:1px solid #e2e8f0;
-    display:flex;flex-direction:column;flex-shrink:0;
-    transition:width 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
-  .kartei-panel.open{width:380px;}
-  .kartei-panel.fullscreen{
-    position:fixed!important;inset:0!important;
-    width:100%!important;z-index:500!important;
-    transform:none!important;border-left:none!important;
-    border-radius:0;
-  }
-  .kartei-fs-backdrop{
-    display:none;position:fixed;inset:0;
-    background:rgba(0,0,0,0.5);z-index:499;cursor:pointer;
-  }
-  .kartei-fs-backdrop.show{display:block;}
-  .kartei-fullscreen-btn{
-    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
-    color:rgba(255,255,255,0.85);width:30px;height:30px;border-radius:8px;
-    cursor:pointer;display:flex;align-items:center;justify-content:center;
-    transition:all 0.15s;margin-right:4px;padding:0;flex-shrink:0;
-  }
-  .kartei-fullscreen-btn:hover{background:rgba(255,255,255,0.22);color:white;border-color:rgba(255,255,255,0.35);}
-  .kartei-fullscreen-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+/* Kartei Form */
+.k-form{padding:16px 18px;}
+.k-form-group{margin-bottom:12px;}
+.k-form-label{font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;display:block;}
+.k-form-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:inherit;font-size:12px;color:var(--text-1);outline:none;transition:all 0.15s;background:#f1f5f9;}
+.k-form-input:focus{border-color:#1e40af;background:white;box-shadow:0 0 0 3px rgba(30,64,175,0.12);}
+.k-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.k-form-save{width:100%;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-top:4px;box-shadow:0 2px 8px rgba(30,64,175,0.35);}
+.k-form-save:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,64,175,0.45);}
+.k-dsgvo-note{font-size:10px;color:var(--text-3);text-align:center;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:4px;}
 
-  .kartei-header{
-    padding:16px 18px;border-bottom:1px solid #e2e8f0;
-    display:flex;align-items:center;justify-content:space-between;
-    background:linear-gradient(135deg,#0f172a,#1e293b);
-    flex-shrink:0;
-  }
-  .kartei-header-left{display:flex;align-items:center;gap:10px;}
-  .kartei-header-icon{
-    width:34px;height:34px;background:#1e40af;border-radius:9px;
-    display:flex;align-items:center;justify-content:center;font-size:16px;
-  }
-  .kartei-header-title{font-size:14px;font-weight:800;color:white;letter-spacing:-0.2px;}
-  .kartei-header-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px;}
-  .kartei-close{
-    background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);
-    width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;
-    display:flex;align-items:center;justify-content:center;transition:all 0.15s;
-  }
-  .kartei-close:hover{background:rgba(255,255,255,0.2);color:white;}
+/* ══ DASHBOARD ══ */
+.dashboard{flex:1;overflow-y:auto;padding:0;background:#f0f4f8;}
+.dash-header{background:linear-gradient(135deg,#1e40af,#1d4ed8);padding:28px 32px 64px;position:relative;overflow:hidden;}
+.dash-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.dash-header::after{content:'';position:absolute;bottom:-20px;right:80px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.dash-title{font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:4px;letter-spacing:0.5px;text-transform:uppercase;}
+.dash-title span{color:white;font-size:24px;font-weight:800;display:block;margin-top:4px;letter-spacing:-0.5px;}
+.dash-subtitle{font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.compliance-bar{margin:0 20px;margin-top:-28px;background:white;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 4px 24px rgba(0,0,0,0.12);position:relative;z-index:2;margin-bottom:20px;}
+.compliance-item{display:flex;align-items:center;gap:6px;font-size:12px;}
+.compliance-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.compliance-label{color:var(--text-2);}
+.compliance-value{font-weight:800;color:var(--text-1);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:0 20px;margin-bottom:20px;}
+.stat-card{background:white;border-radius:18px;padding:20px;box-shadow:0 2px 16px rgba(0,0,0,0.07);transition:transform 0.2s,box-shadow 0.2s;border:1px solid rgba(0,0,0,0.04);}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.12);}
+.stat-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;}
+.stat-value{font-size:32px;font-weight:800;color:var(--text-1);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.stat-label{font-size:12px;color:var(--text-2);font-weight:500;}
+.stat-change{font-size:11px;font-weight:700;margin-top:8px;display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;}
+.stat-change.up{color:#16a34a;background:#f0fdf4;}
+.stat-change.down{color:#dc2626;background:#fef2f2;}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px 20px;}
+.dash-card{background:white;border-radius:18px;box-shadow:0 2px 16px rgba(0,0,0,0.07);overflow:hidden;border:1px solid rgba(0,0,0,0.04);}
+.dash-card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;font-size:14px;font-weight:800;color:var(--text-1);display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.2px;}
+.dash-card-body{padding:16px 20px;}
+.activity-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f8fafc;}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.activity-text{font-size:12px;color:var(--text-1);flex:1;line-height:1.4;}
+.activity-time{font-size:11px;color:var(--text-3);flex-shrink:0;}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:10px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;}
+.chart-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#3b82f6,#1e40af);opacity:0.5;cursor:pointer;transition:opacity 0.2s;}
+.chart-bar:hover{opacity:1;}
+.chart-bar.today{opacity:1;box-shadow:0 0 12px rgba(30,64,175,0.4);}
+.chart-label{font-size:9px;color:var(--text-3);text-align:center;font-weight:600;}
 
-  .kartei-patient-bar{
-    padding:12px 18px;border-bottom:1px solid #e2e8f0;
-    display:flex;align-items:center;gap:10px;background:#f8fafc;flex-shrink:0;
-  }
-  .kartei-avatar{
-    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;
-    justify-content:center;font-size:14px;font-weight:700;color:white;flex-shrink:0;
-  }
-  .kartei-patient-name{font-size:13px;font-weight:700;color:#0f172a;}
-  .kartei-patient-meta{font-size:11px;color:#64748b;margin-top:1px;}
+/* ══ MOBILE BOTTOM NAV ══ */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:150;padding:0;box-shadow:0 -4px 20px rgba(0,0,0,0.08);}
+.mobile-nav-items{display:flex;align-items:stretch;gap:4px;padding:6px;}
+.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px 10px;gap:3px;background:transparent;border:none;border-radius:10px;cursor:pointer;font-family:inherit;color:var(--text-3);font-size:10px;font-weight:600;transition:all 0.15s;position:relative;}
+.mobile-nav-item.active{color:#1e40af;background:#eff6ff;}
+.mobile-nav-item .mnav-icon{font-size:20px;line-height:1;}
+.mobile-nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:#dc2626;color:white;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center;}
 
-  .kartei-tabs{
-    display:flex;
-    background:white;
-    flex-shrink:0;
-    overflow-x:auto;
-    overflow-y:hidden;
-    border-bottom:1px solid #f1f5f9;
-    padding:10px;
-    gap:6px;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-  }
-  .kartei-tabs::-webkit-scrollbar{display:none;}
-  .kartei-tab{
-    flex-shrink:0;
-    padding:8px 14px;
-    border:none;
-    background:#f1f5f9;
-    cursor:pointer;
-    font-family:inherit;font-size:12px;font-weight:600;
-    color:#64748b;
-    border-radius:10px;
-    transition:all 0.15s;white-space:nowrap;
-    display:flex;align-items:center;gap:4px;
-  }
-  .kartei-tab.active{
-    color:white !important;
-    background:#1e40af;
-    font-weight:700;
-  }
-  .kartei-tab:hover:not(.active){color:#1e40af !important;background:#dbeafe;}
+/* Mobile back header */
+.mobile-chat-back{display:none;align-items:center;gap:10px;padding:12px 16px;background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.mobile-back-btn{background:#f1f5f9;border:none;color:var(--text-1);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.mobile-chat-back-name{font-size:15px;font-weight:800;color:var(--text-1);flex:1;}
+.mobile-chat-back-actions{display:flex;gap:6px;}
+.mobile-action-icon{background:rgba(255,255,255,0.1);border:none;color:white;width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.mobile-action-icon.teal{background:#1e40af;}
 
-  .kartei-body{flex:1;overflow-y:auto;padding:0;}
+/* ══ RESPONSIVE ══ */
+@media(max-width:768px){
+  .mobile-bottom-nav{display:block;}
+  .view.active{height:calc(100vh - 110px);flex-direction:column;}
+  .clinic-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);flex-shrink:0;height:100%;}
+  .clinic-sidebar.mobile-hidden{display:none;}
+  .patient-list{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .chat-area{width:100%;}
+  .patient-panel{display:none;}
+  .chat-header{padding:10px 14px;gap:8px;}
+  .chat-header .avatar{width:34px;height:34px;font-size:13px;}
+  .chat-patient-name{font-size:14px;}
+  .chat-patient-sub{font-size:11px;}
+  .chat-actions{gap:6px;}
+  .chat-actions .action-btn{padding:0 8px;height:32px;font-size:12px;}
+  #karteiBtn{font-size:12px;width:auto;padding:0 8px;}
+  .action-btn.transfer-btn{font-size:12px;width:auto;padding:0 8px;}
+  .action-btn.call{font-size:12px;width:auto;padding:0 8px;}
+  .messages{padding:14px 12px;gap:10px;}
+  .msg-bubble{font-size:13px;padding:9px 12px;}
+  .chat-input-area{padding:10px 12px;}
+  .kartei-panel{position:fixed;inset:48px 0 62px 0;width:100%!important;z-index:120;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
+  .kartei-panel.open{transform:translateX(0);width:100%!important;}
+  .kartei-close{width:36px!important;height:36px!important;font-size:18px!important;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px;padding:0 14px;}
+  .dash-grid{grid-template-columns:1fr;padding:0 14px 14px;}
+  .dashboard{padding:0;}
+  .dash-header{padding:20px 16px 50px;}
+  .compliance-bar{margin:0 14px;margin-top:-24px;gap:10px;padding:12px 14px;}
+  .dash-title span{font-size:18px;}
+  .vertretung-main{padding:16px;}
+  .transfer-stats{grid-template-columns:repeat(3,1fr);}
+  .network-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-value{font-size:22px;}
+  .transfer-stats{grid-template-columns:repeat(3,1fr);}
+  .network-grid{grid-template-columns:1fr 1fr;}
+  .vacation-dates{flex-direction:column;gap:8px;}
+  .date-arrow{transform:rotate(90deg);}
+  .lp-pricing-grid{flex-direction:column;align-items:center;}
+  .lp-plan{width:100%;max-width:340px;}
+  .lp-plan.popular{transform:none;}
+  .lp-stats{gap:24px;}
+  .k-form-row{grid-template-columns:1fr;}
+}
 
-  /* Filter Bar */
-  .k-filter-bar{
-    padding:10px 14px;border-bottom:1px solid #e2e8f0;
-    background:#fafbfc;display:flex;flex-direction:column;gap:8px;
-    position:sticky;top:0;z-index:5;
-  }
-  .k-search-wrap{position:relative;}
-  .k-search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;}
-  .k-search-input{
-    width:100%;padding:7px 10px 7px 28px;
-    border:1.5px solid #e2e8f0;border-radius:8px;
-    font-family:inherit;font-size:12px;color:#0f172a;
-    outline:none;background:white;transition:border-color 0.15s;
-  }
-  .k-search-input:focus{border-color:#1e40af;}
-  .k-year-pills{display:flex;gap:5px;flex-wrap:wrap;}
-  .k-year-pill{
-    padding:4px 10px;border-radius:20px;border:1.5px solid #e2e8f0;
-    background:white;font-size:11px;font-weight:700;color:#64748b;
-    cursor:pointer;transition:all 0.15s;font-family:inherit;
-  }
-  .k-year-pill.active{background:#1e40af;border-color:#1e40af;color:white;}
-  .k-year-pill:hover:not(.active){border-color:#1e40af;color:#1e40af;}
-  .k-visit-count{font-size:11px;color:#64748b;font-weight:600;}
+/* ══ CALL OVERLAY ══ */
+.call-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;}
+.call-overlay.show{display:flex;}
+.call-card{background:#0f172a;border-radius:28px;padding:40px 48px;text-align:center;width:320px;color:white;box-shadow:0 20px 60px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);}
+.call-avatar{width:80px;height:80px;background:linear-gradient(135deg,#1e40af,#1d4ed8);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;animation:callPulse 2s ease-in-out infinite;}
+@keyframes callPulse{0%,100%{box-shadow:0 0 0 0 rgba(30,64,175,0.4)}50%{box-shadow:0 0 0 16px rgba(30,64,175,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(30,64,175,0.4)}50%{box-shadow:0 0 0 16px rgba(30,64,175,0)}}
+.call-name{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.3px;}
+.call-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px;}
+.call-status{font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:36px;}
+.call-btns{display:flex;justify-content:center;gap:24px;}
+.call-end{width:60px;height:60px;background:#dc2626;border-radius:50%;border:none;color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(220,38,38,0.4);}
+.call-mute{width:60px;height:60px;background:rgba(255,255,255,0.12);border-radius:50%;border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-  .k-empty-state{
-    text-align:center;padding:32px 16px;color:#64748b;
-    font-size:13px;
-  }
-  .k-empty-icon{font-size:32px;margin-bottom:8px;}
+/* ══ MODAL ══ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:white;border-radius:24px;width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.2);}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-size:17px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;}
+.modal-close{width:32px;height:32px;border-radius:8px;border:none;background:#f1f5f9;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all 0.15s;}
+.modal-close:hover{background:#fee2e2;color:#dc2626;}
+.modal-body{padding:24px;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--text-1);outline:none;transition:all 0.2s;background:#f8fafc;}
+.form-input:focus{border-color:#1e40af;background:white;box-shadow:0 0 0 3px rgba(30,64,175,0.1);}
+.clinic-option{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;margin-bottom:8px;transition:all 0.2s;}
+.clinic-option:hover{border-color:#1e40af;background:#eff6ff;}
+.clinic-option.selected{border-color:#1e40af;background:#eff6ff;}
+.clinic-option-icon{font-size:24px;}
+.clinic-option-info{flex:1;}
+.clinic-option-name{font-size:14px;font-weight:700;color:var(--text-1);}
+.clinic-option-detail{font-size:12px;color:var(--text-2);}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+.btn-primary{padding:10px 24px;background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(30,64,175,0.35);transition:all 0.15s;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,64,175,0.45);}
+.btn-secondary{padding:10px 24px;background:#f1f5f9;color:var(--text-1);border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-secondary:hover{background:var(--border);}
 
-  /* Kartei Stammdaten */
-  .k-section{
-    background:white;
-    border-left:4px solid #0f172a;
-    border-radius:16px;
-    box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    margin:10px;
-    padding:16px;
-  }
-  .k-section-title{
-    font-size:11px;font-weight:700;color:#0f172a;
-    text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;
-  }
-  .k-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:12px;}
-  .k-label{color:#64748b;}
-  .k-value{font-weight:600;color:#0f172a;text-align:right;max-width:60%;}
-  .k-alert{
-    background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;
-    padding:8px 12px;font-size:11px;font-weight:600;color:#92400e;
-    display:flex;align-items:center;gap:6px;margin-top:8px;
-  }
+.scrollbar::-webkit-scrollbar{width:4px;}
+.scrollbar::-webkit-scrollbar-track{background:transparent;}
+.scrollbar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
-  /* Kartei Visit Timeline */
-  .k-visit{
-    background:white;border-left:4px solid #1e40af;
-    border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    margin:10px;padding:14px;
-    cursor:pointer;transition:background 0.12s,box-shadow 0.12s;
-  }
-  .k-visit:hover{background:#f8fafc;box-shadow:0 4px 16px rgba(0,0,0,0.1);}
-  .k-visit-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .k-visit-date{
-    font-size:10px;font-weight:700;color:white;background:#1e40af;
-    padding:3px 8px;border-radius:5px;font-family:'IBM Plex Mono',monospace;
-  }
-  .k-visit-type{
-    font-size:11px;font-weight:700;color:#1e293b;
-    background:#f1f5f9;padding:3px 8px;border-radius:5px;
-  }
-  .k-visit-diag{font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;}
-  .k-visit-notes{font-size:11px;color:#64748b;line-height:1.5;}
-  .k-visit-therapy{
-    font-size:11px;font-weight:600;color:#1d4ed8;
-    background:#eff6ff;padding:4px 8px;border-radius:6px;
-    margin-top:6px;display:inline-block;
-  }
-
-  /* New Visit Form */
-  .k-form{padding:16px 18px;}
-  .k-form-group{margin-bottom:12px;}
-  .k-form-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;display:block;}
-  .k-form-input{
-    width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;
-    border-radius:8px;font-family:inherit;font-size:12px;color:#0f172a;
-    outline:none;transition:border-color 0.15s,box-shadow 0.15s;background:#EEF4FF;
-  }
-  .k-form-input:focus{border-color:#1e40af;box-shadow:0 0 0 3px rgba(30,64,175,0.15);}
-  .k-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .k-form-save{
-    width:100%;padding:10px;border:none;border-radius:12px;
-    background:linear-gradient(135deg,#1e40af,#1d4ed8);
-    color:white;font-family:inherit;font-size:13px;font-weight:700;
-    cursor:pointer;transition:opacity 0.15s;margin-top:4px;
-  }
-  .k-form-save:hover{opacity:0.88;}
-  .k-dsgvo-note{
-    font-size:10px;color:#64748b;text-align:center;
-    margin-top:8px;display:flex;align-items:center;justify-content:center;gap:4px;
-  }
-
-  /* DASHBOARD */
-  /* ══ DASHBOARD ══ */
-  .dashboard{flex:1;overflow-y:auto;padding:0;background:#f0f4f8;}
-
-  .dash-header{
-    background:linear-gradient(135deg,#1e40af,#1d4ed8);
-    padding:24px 28px 60px;position:relative;overflow:hidden;
-  }
-  .dash-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);}
-  .dash-header::after{content:'';position:absolute;bottom:-20px;right:80px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);}
-  .dash-title{font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:4px;}
-  .dash-title span{color:white;font-size:22px;font-weight:800;display:block;margin-top:2px;}
-  .dash-subtitle{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;}
-
-  .compliance-bar{
-    margin:0 20px;margin-top:-28px;
-    background:white;border-radius:14px;
-    padding:14px 18px;
-    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-    box-shadow:0 4px 20px rgba(0,0,0,0.1);
-    position:relative;z-index:2;margin-bottom:20px;
-  }
-  .compliance-item{display:flex;align-items:center;gap:6px;font-size:12px;}
-  .compliance-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-  .compliance-label{color:#64748b;}
-  .compliance-value{font-weight:700;color:#0f172a;}
-
-  .stats-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);
-    gap:14px;padding:0 20px;margin-bottom:20px;
-  }
-  .stat-card{
-    background:white;border-radius:16px;padding:18px;
-    box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    border:none;transition:transform 0.2s,box-shadow 0.2s;
-  }
-  .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.1);}
-  .stat-icon{
-    width:40px;height:40px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;margin-bottom:14px;
-  }
-  .stat-value{font-size:30px;font-weight:800;color:#0f172a;line-height:1;margin-bottom:4px;}
-  .stat-label{font-size:12px;color:#64748b;font-weight:500;}
-  .stat-change{font-size:11px;font-weight:700;margin-top:8px;display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;}
-  .stat-change.up{color:#16a34a;background:#f0fdf4;}
-  .stat-change.down{color:#dc2626;background:#fef2f2;}
-
-  .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px 20px;}
-  .dash-card{background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;}
-  .dash-card-header{
-    padding:16px 20px;border-bottom:1px solid #f1f5f9;
-    font-size:14px;font-weight:700;color:#0f172a;
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  .dash-card-body{padding:16px 20px;}
-
-  .activity-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f8fafc;}
-  .activity-item:last-child{border-bottom:none;}
-  .activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  .activity-text{font-size:12px;color:#334155;flex:1;line-height:1.4;}
-  .activity-time{font-size:11px;color:#94a3b8;flex-shrink:0;}
-
-  .chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:10px;}
-  .chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;}
-  .chart-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#1e40af,#1d4ed8);opacity:0.6;cursor:pointer;transition:opacity 0.2s;}
-  .chart-bar:hover{opacity:1;}
-  .chart-bar.today{opacity:1;box-shadow:0 0 12px rgba(30,64,175,0.4);}
-  .chart-label{font-size:9px;color:#94a3b8;text-align:center;font-weight:600;}
-
-
-  /* ══ MOBILE BOTTOM NAV ══ */
-  .mobile-bottom-nav{
-    display:none;position:fixed;bottom:0;left:0;right:0;
-    background:white;border-top:1px solid #e2e8f0;
-    z-index:150;padding:0;
-    box-shadow:0 -2px 12px rgba(0,0,0,0.08);
-  }
-  .mobile-nav-items{display:flex;align-items:stretch;gap:6px;padding:6px;}
-  .mobile-nav-item{
-    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:8px 4px 10px;gap:4px;background:#f1f5f9;border:none;border-radius:10px;cursor:pointer;
-    font-family:inherit;color:#64748b;font-size:10px;font-weight:600;
-    transition:all 0.15s;position:relative;
-  }
-  .mobile-nav-item.active{color:white;background:#1e40af;}
-  .mobile-nav-item .mnav-icon{font-size:20px;line-height:1;}
-  .mobile-nav-badge{
-    position:absolute;top:6px;right:calc(50% - 18px);
-    background:#ef4444;color:white;
-    font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center;
-  }
-
-  /* Mobile back header */
-  .mobile-chat-back{
-    display:none;align-items:center;gap:10px;padding:12px 16px;
-    background:white;border-bottom:1px solid #e2e8f0;
-    position:sticky;top:0;z-index:10;
-    box-shadow:0 1px 4px rgba(0,0,0,0.06);
-  }
-  .mobile-back-btn{
-    background:#f1f5f9;border:none;color:#0f172a;
-    width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .mobile-chat-back-name{font-size:15px;font-weight:700;color:#0f172a;flex:1;}
-  .mobile-chat-back-actions{display:flex;gap:6px;}
-  .mobile-action-icon{
-    background:rgba(255,255,255,0.1);border:none;color:white;
-    width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .mobile-action-icon.teal{background:#1e40af;}
-
-  /* ══ RESPONSIVE BREAKPOINTS ══ */
-  @media (max-width: 768px) {
-
-    /* Show mobile bottom nav */
-    .mobile-bottom-nav{display:block;}
-
-    /* Views take full screen minus top bar + bottom nav */
-    .view.active{
-      height:calc(100vh - 110px);
-      flex-direction:column;
-    }
-
-    /* ── CLINIC VIEW MOBILE ── */
-
-    /* Sidebar becomes full-screen patient list by default */
-    .clinic-sidebar{
-      width:100%;border-right:none;border-bottom:1px solid #e2e8f0;
-      flex-shrink:0;height:100%;
-    }
-    .clinic-sidebar.mobile-hidden{display:none;}
-    .patient-list{overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
-    /* Chat area full width */
-    .chat-area{width:100%;}
-
-    /* Patient info panel — hide on mobile (info in kartei) */
-    .patient-panel{display:none;}
-
-    /* Chat header mobile */
-    .chat-header{padding:10px 14px;gap:8px;}
-    .chat-header .avatar{width:34px;height:34px;font-size:13px;}
-    .chat-patient-name{font-size:14px;}
-    .chat-patient-sub{font-size:11px;}
-    .chat-actions{gap:6px;}
-    .chat-actions .action-btn{
-      padding:0 8px;height:32px;font-size:12px;
-    }
-    /* Hide text labels on action buttons mobile */
-    #karteiBtn{font-size:12px;width:auto;padding:0 8px;}
-    .action-btn.transfer-btn{font-size:12px;width:auto;padding:0 8px;}
-    .action-btn.call{font-size:12px;width:auto;padding:0 8px;}
-
-    /* Messages padding */
-    .messages{padding:14px 12px;gap:10px;}
-    .msg-bubble{font-size:13px;padding:9px 12px;}
-
-    /* Input area */
-    .chat-input-area{padding:10px 12px;}
-
-    /* Kartei panel — full screen overlay on mobile */
-    .kartei-panel{
-      position:fixed;inset:48px 0 62px 0;/* mobile: top-bar only, no nav tab bar */
-      width:100% !important;
-      z-index:120;
-      transform:translateX(100%);
-      transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .kartei-panel.open{
-      transform:translateX(0);
-      width:100% !important;
-    }
-    /* Show close button prominently on mobile */
-    .kartei-close{
-      width:36px!important;height:36px!important;
-      font-size:18px!important;
-    }
-
-    /* Dashboard mobile */
-    .stats-grid{grid-template-columns:1fr 1fr;gap:10px;padding:0 14px;}
-    .dash-grid{grid-template-columns:1fr;padding:0 14px 14px;}
-    .dashboard{padding:0;}
-    .dash-header{padding:20px 16px 50px;}
-    .compliance-bar{margin:0 14px;margin-top:-24px;gap:10px;padding:12px 14px;}
-    .dash-title span{font-size:18px;}
-
-    /* Vertretung mobile */
-    .vertretung-main{padding:16px;}
-    .transfer-stats{grid-template-columns:repeat(3,1fr);}
-    .network-grid{grid-template-columns:repeat(2,1fr);}
-  }
-
-  @media (max-width: 480px) {
-    .stats-grid{grid-template-columns:1fr 1fr;}
-    .stat-value{font-size:22px;}
-    .transfer-stats{grid-template-columns:repeat(3,1fr);}
-    .network-grid{grid-template-columns:1fr 1fr;}
-    .vacation-dates{flex-direction:column;gap:8px;}
-    .date-arrow{transform:rotate(90deg);}
-    .lp-pricing-grid{flex-direction:column;align-items:center;}
-    .lp-plan{width:100%;max-width:340px;}
-    .lp-plan.popular{transform:none;}
-    .lp-stats{gap:24px;}
-    .k-form-row{grid-template-columns:1fr;}
-  }
-
-  /* CALL */
-  .call-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;}
-  .call-overlay.show{display:flex;}
-  .call-card{background:#0f172a;border-radius:24px;padding:40px 48px;text-align:center;width:320px;color:white;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-  .call-avatar{width:80px;height:80px;background:#1e40af;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;animation:pulse 2s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,0.4)}50%{box-shadow:0 0 0 16px rgba(13,148,136,0)}}
-  .call-name{font-size:22px;font-weight:700;margin-bottom:4px;}
-  .call-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px;}
-  .call-status{font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:36px;}
-  .call-btns{display:flex;justify-content:center;gap:24px;}
-  .call-end{width:60px;height:60px;background:#ef4444;border-radius:50%;border:none;color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .call-mute{width:60px;height:60px;background:rgba(255,255,255,0.1);border-radius:50%;border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-
-  /* TRANSFER MODAL */
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:300;align-items:center;justify-content:center;}
-  .modal-overlay.show{display:flex;}
-  .modal{background:white;border-radius:20px;width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
-  .modal-header{padding:20px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;}
-  .modal-title{font-size:16px;font-weight:700;color:#0f172a;}
-  .modal-close{width:32px;height:32px;border-radius:8px;border:none;background:#f1f5f9;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
-  .modal-body{padding:24px;}
-  .form-group{margin-bottom:16px;}
-  .form-label{font-size:13px;font-weight:600;color:#1e293b;margin-bottom:6px;display:block;}
-  .form-input{width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:14px;color:#0f172a;outline:none;transition:border 0.2s;}
-  .form-input:focus{border-color:#1e40af;}
-  .clinic-option{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e2e8f0;border-radius:10px;cursor:pointer;margin-bottom:8px;transition:all 0.2s;}
-  .clinic-option:hover{border-color:#1e40af;background:#eff6ff;}
-  .clinic-option.selected{border-color:#1e40af;background:#eff6ff;}
-  .clinic-option-icon{font-size:24px;}
-  .clinic-option-info{flex:1;}
-  .clinic-option-name{font-size:14px;font-weight:600;color:#0f172a;}
-  .clinic-option-detail{font-size:12px;color:#64748b;}
-  .modal-footer{padding:16px 24px;border-top:1px solid #e2e8f0;display:flex;gap:8px;justify-content:flex-end;}
-  .btn-primary{padding:10px 24px;background:#1e40af;color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;}
-  .btn-secondary{padding:10px 24px;background:#f1f5f9;color:#1e293b;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;}
-
-  .scrollbar::-webkit-scrollbar{width:4px;}
-  .scrollbar::-webkit-scrollbar-track{background:transparent;}
-  .scrollbar::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
-  /* ══ DARK MODE ══ */
-  [data-theme="dark"] body{background:#0f172a;color:#e2e8f0;}
-  [data-theme="dark"] .top-nav{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .logo-text{color:#e2e8f0;}
-  [data-theme="dark"] #appNavBar{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .nav-tab{color:#94a3b8;background:#1e293b;}
-  [data-theme="dark"] .nav-tabs{background:transparent;}
-  [data-theme="dark"] .nav-tab.active{background:#1e40af;color:white;}
-  [data-theme="dark"] .lang-btn{background:#1e293b;color:#94a3b8;border-color:#475569;}
-  [data-theme="dark"] .lang-btn.active{background:#1e40af;color:white;}
-  [data-theme="dark"] #darkToggle{background:#334155;color:#e2e8f0;}
-  [data-theme="dark"] #doctorNameDisplay{color:#e2e8f0;}
-  [data-theme="dark"] .clinic-sidebar{background:#162032;border-right-color:#334155;}
-  [data-theme="dark"] .sidebar-header{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .sidebar-title{color:#e2e8f0;}
-  [data-theme="dark"] .search-box input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
-  [data-theme="dark"] .patient-item{border-bottom-color:#334155;}
-  [data-theme="dark"] .patient-item:hover{background:#1e3a5f;}
-  [data-theme="dark"] .patient-item.active{background:#1e3a5f;}
-  [data-theme="dark"] .patient-name{color:#e2e8f0;}
-  [data-theme="dark"] .patient-preview{color:#94a3b8;}
-  [data-theme="dark"] .chat-area{background:#0f172a;}
-  [data-theme="dark"] .chat-header{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .chat-patient-name{color:#e2e8f0;}
-  [data-theme="dark"] .action-btn{background:#1e293b;border-color:#334155;color:#94a3b8;}
-  [data-theme="dark"] .action-btn:hover{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd;}
-  [data-theme="dark"] .messages{background:#0f172a;}
-  [data-theme="dark"] .msg-row.in .msg-bubble{background:#1e293b;color:#e2e8f0;}
-  [data-theme="dark"] .date-divider{color:#64748b;}
-  [data-theme="dark"] .date-divider::before,[data-theme="dark"] .date-divider::after{background:#334155;}
-  [data-theme="dark"] .system-msg{background:#1e293b;border-color:#334155;color:#94a3b8;}
-  [data-theme="dark"] .chat-input-area{background:#1e293b;border-top-color:#334155;}
-  [data-theme="dark"] .input-row{background:#0f172a;border-color:#334155;}
-  [data-theme="dark"] .msg-input{color:#e2e8f0;background:transparent;}
-  [data-theme="dark"] .input-btn{color:#94a3b8;}
-  [data-theme="dark"] .input-btn:hover{background:#1e3a5f;color:#93c5fd;}
-  [data-theme="dark"] .patient-panel{background:#1e293b;border-left-color:#334155;}
-  [data-theme="dark"] .panel-section-title{color:#94a3b8;}
-  [data-theme="dark"] .info-row{border-bottom-color:#334155;}
-  [data-theme="dark"] .info-label{color:#94a3b8;}
-  [data-theme="dark"] .info-value{color:#e2e8f0;}
-  [data-theme="dark"] .kartei-panel{background:#1e293b;border-left-color:#334155;}
-  [data-theme="dark"] .kartei-tabs{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .kartei-tab{color:#94a3b8;}
-  [data-theme="dark"] .kartei-tab.active{background:#1e40af;color:white;}
-  [data-theme="dark"] .kartei-body{background:#1e293b;}
-  [data-theme="dark"] .kartei-patient-bar{background:#162032;border-bottom-color:#334155;}
-  [data-theme="dark"] .kartei-patient-name{color:#e2e8f0;}
-  [data-theme="dark"] .kartei-patient-meta{color:#94a3b8;}
-  [data-theme="dark"] .k-filter-bar{background:#162032;border-bottom-color:#334155;}
-  [data-theme="dark"] .k-search-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
-  [data-theme="dark"] .k-visit{border-bottom-color:#334155;}
-  [data-theme="dark"] .k-visit:hover{background:#162032;}
-  [data-theme="dark"] .k-visit-diag{color:#e2e8f0;}
-  [data-theme="dark"] .k-visit-notes{color:#94a3b8;}
-  [data-theme="dark"] .k-section{border-bottom-color:#334155;}
-  [data-theme="dark"] .k-row{border-bottom-color:#1e293b;}
-  [data-theme="dark"] .k-label{color:#94a3b8;}
-  [data-theme="dark"] .k-value{color:#e2e8f0;}
-  [data-theme="dark"] .k-form-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
-  [data-theme="dark"] .vertretung-main{background:#0f172a;}
-  [data-theme="dark"] .vertretung-title{color:#e2e8f0;}
-  [data-theme="dark"] .vacation-card{background:#1e293b;border-color:#334155;}
-  [data-theme="dark"] .vacation-title{color:#e2e8f0;}
-  [data-theme="dark"] .vacation-dates{background:#162032;border-color:#334155;}
-  [data-theme="dark"] .date-value{color:#e2e8f0;}
-  [data-theme="dark"] .transfer-stat{background:#162032;border-color:#334155;}
-  [data-theme="dark"] .transfer-stat-value{color:#e2e8f0;}
-  [data-theme="dark"] .patient-transfer-list{background:#1e293b;border-color:#334155;}
-  [data-theme="dark"] .list-header{border-bottom-color:#334155;}
-  [data-theme="dark"] .list-title{color:#e2e8f0;}
-  [data-theme="dark"] .transfer-patient-item{border-bottom-color:#334155;}
-  [data-theme="dark"] .transfer-patient-item:hover{background:#162032;}
-  [data-theme="dark"] .tp-name{color:#e2e8f0;}
-  [data-theme="dark"] .tp-details{color:#94a3b8;}
-  [data-theme="dark"] .network-map{background:#1e293b;border-color:#334155;}
-  [data-theme="dark"] .network-title{color:#e2e8f0;}
-  [data-theme="dark"] .clinic-node{background:#162032;border-color:#334155;}
-  [data-theme="dark"] .clinic-node-name{color:#e2e8f0;}
-  [data-theme="dark"] .clinic-node-detail{color:#94a3b8;}
-  [data-theme="dark"] .dashboard{background:#0f172a;}
-  [data-theme="dark"] .stat-card{background:#1e293b;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
-  [data-theme="dark"] .stat-value{color:#e2e8f0;}
-  [data-theme="dark"] .stat-label{color:#94a3b8;}
-  [data-theme="dark"] .dash-card{background:#1e293b;}
-  [data-theme="dark"] .dash-card-header{color:#e2e8f0;border-bottom-color:#334155;}
-  [data-theme="dark"] .activity-text{color:#cbd5e1;}
-  [data-theme="dark"] .compliance-bar{background:#1e293b;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
-  [data-theme="dark"] .mobile-bottom-nav{background:#1e293b;border-top-color:#334155;}
-  [data-theme="dark"] .mobile-nav-item{color:#94a3b8;background:#1e293b;}
-  [data-theme="dark"] .mobile-nav-item.active{background:#1e40af;color:white;}
-  [data-theme="dark"] .mobile-chat-back{background:#1e293b;border-bottom-color:#334155;}
-  [data-theme="dark"] .mobile-chat-back-name{color:#e2e8f0;}
-  [data-theme="dark"] .modal{background:#1e293b;}
-  [data-theme="dark"] .modal-header{border-bottom-color:#334155;}
-  [data-theme="dark"] .modal-title{color:#e2e8f0;}
-  [data-theme="dark"] .modal-footer{border-top-color:#334155;}
-  [data-theme="dark"] .form-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
-  [data-theme="dark"] .form-label{color:#94a3b8;}
-  [data-theme="dark"] .clinic-option{border-color:#334155;}
-  [data-theme="dark"] .clinic-option:hover{border-color:#3b82f6;background:#1e3a5f;}
-  [data-theme="dark"] .clinic-option-name{color:#e2e8f0;}
-
+/* ══ DARK MODE ══ */
+[data-theme="dark"] body{background:#0f172a;color:#e2e8f0;}
+[data-theme="dark"] .top-nav{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .logo-text{color:#e2e8f0;}
+[data-theme="dark"] #appNavBar{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .nav-tab{color:#94a3b8;background:transparent;}
+[data-theme="dark"] .nav-tab:hover{background:#1e3a5f;color:#93c5fd;}
+[data-theme="dark"] .nav-tabs{background:transparent;}
+[data-theme="dark"] .nav-tab.active{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;}
+[data-theme="dark"] .lang-btn{background:#1e293b;color:#94a3b8;border-color:#475569;}
+[data-theme="dark"] .lang-btn.active{background:#1e40af;color:white;}
+[data-theme="dark"] #darkToggle{background:#334155;color:#e2e8f0;}
+[data-theme="dark"] #doctorNameDisplay{color:#e2e8f0;}
+[data-theme="dark"] #desktopSidebar{background:#1e293b;border-right-color:#334155;}
+[data-theme="dark"] .ds-nav-item{color:#94a3b8;}
+[data-theme="dark"] .ds-nav-item:hover{background:#1e3a5f;color:#93c5fd;}
+[data-theme="dark"] .ds-nav-item.active{background:#1e3a5f;color:#93c5fd;border-left-color:#3b82f6;}
+[data-theme="dark"] .ds-profile{border-top-color:#334155;}
+[data-theme="dark"] .ds-profile-name{color:#e2e8f0;}
+[data-theme="dark"] .clinic-sidebar{background:#162032;border-right-color:#334155;}
+[data-theme="dark"] .sidebar-header{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .sidebar-title{color:#e2e8f0;}
+[data-theme="dark"] .search-box input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
+[data-theme="dark"] .patient-item{border-bottom-color:#334155;}
+[data-theme="dark"] .patient-item:hover{background:#1e3a5f;}
+[data-theme="dark"] .patient-item.active{background:#1e3a5f;}
+[data-theme="dark"] .patient-name{color:#e2e8f0;}
+[data-theme="dark"] .patient-preview{color:#94a3b8;}
+[data-theme="dark"] .chat-area{background:#0f172a;}
+[data-theme="dark"] .chat-header{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .chat-patient-name{color:#e2e8f0;}
+[data-theme="dark"] .action-btn{background:#1e293b;border-color:#334155;color:#94a3b8;}
+[data-theme="dark"] .action-btn:hover{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd;}
+[data-theme="dark"] .messages{background:#0f172a;}
+[data-theme="dark"] .msg-row.in .msg-bubble{background:#1e293b;color:#e2e8f0;}
+[data-theme="dark"] .date-divider{color:#64748b;}
+[data-theme="dark"] .date-divider::before,[data-theme="dark"] .date-divider::after{background:#334155;}
+[data-theme="dark"] .system-msg{background:#1e293b;border-color:#334155;color:#94a3b8;}
+[data-theme="dark"] .chat-input-area{background:#1e293b;border-top-color:#334155;}
+[data-theme="dark"] .input-row{background:#0f172a;border-color:#334155;}
+[data-theme="dark"] .msg-input{color:#e2e8f0;background:transparent;}
+[data-theme="dark"] .input-btn{color:#94a3b8;}
+[data-theme="dark"] .input-btn:hover{background:#1e3a5f;color:#93c5fd;}
+[data-theme="dark"] .patient-panel{background:#1e293b;border-left-color:#334155;}
+[data-theme="dark"] .panel-section-title{color:#94a3b8;}
+[data-theme="dark"] .info-row{border-bottom-color:#334155;}
+[data-theme="dark"] .info-label{color:#94a3b8;}
+[data-theme="dark"] .info-value{color:#e2e8f0;}
+[data-theme="dark"] .kartei-panel{background:#1e293b;border-left-color:#334155;}
+[data-theme="dark"] .kartei-tabs{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .kartei-tab{color:#94a3b8;}
+[data-theme="dark"] .kartei-tab.active{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:white;}
+[data-theme="dark"] .kartei-body{background:#1e293b;}
+[data-theme="dark"] .kartei-patient-bar{background:#162032;border-bottom-color:#334155;}
+[data-theme="dark"] .kartei-patient-name{color:#e2e8f0;}
+[data-theme="dark"] .kartei-patient-meta{color:#94a3b8;}
+[data-theme="dark"] .k-filter-bar{background:#162032;border-bottom-color:#334155;}
+[data-theme="dark"] .k-search-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
+[data-theme="dark"] .k-visit{background:#1e293b;}
+[data-theme="dark"] .k-visit:hover{background:#162032;}
+[data-theme="dark"] .k-visit-diag{color:#e2e8f0;}
+[data-theme="dark"] .k-visit-notes{color:#94a3b8;}
+[data-theme="dark"] .k-section{background:#1e293b;}
+[data-theme="dark"] .k-section-title{color:#e2e8f0;}
+[data-theme="dark"] .k-row{border-bottom-color:#1e293b;}
+[data-theme="dark"] .k-label{color:#94a3b8;}
+[data-theme="dark"] .k-value{color:#e2e8f0;}
+[data-theme="dark"] .k-form-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
+[data-theme="dark"] .k-form-input:focus{background:#162032;}
+[data-theme="dark"] .vertretung-main{background:#0f172a;}
+[data-theme="dark"] .vertretung-title{color:#e2e8f0;}
+[data-theme="dark"] .vacation-card{background:#1e293b;border-color:#334155;}
+[data-theme="dark"] .vacation-title{color:#e2e8f0;}
+[data-theme="dark"] .vacation-dates{background:#162032;border-color:#334155;}
+[data-theme="dark"] .date-value{color:#e2e8f0;}
+[data-theme="dark"] .transfer-stat{background:#162032;border-color:#334155;}
+[data-theme="dark"] .transfer-stat-value{color:#e2e8f0;}
+[data-theme="dark"] .patient-transfer-list{background:#1e293b;border-color:#334155;}
+[data-theme="dark"] .list-header{border-bottom-color:#334155;}
+[data-theme="dark"] .list-title{color:#e2e8f0;}
+[data-theme="dark"] .transfer-patient-item{border-bottom-color:#334155;}
+[data-theme="dark"] .transfer-patient-item:hover{background:#162032;}
+[data-theme="dark"] .tp-name{color:#e2e8f0;}
+[data-theme="dark"] .tp-details{color:#94a3b8;}
+[data-theme="dark"] .network-map{background:#1e293b;border-color:#334155;}
+[data-theme="dark"] .network-title{color:#e2e8f0;}
+[data-theme="dark"] .clinic-node{background:#162032;border-color:#334155;}
+[data-theme="dark"] .clinic-node-name{color:#e2e8f0;}
+[data-theme="dark"] .clinic-node-detail{color:#94a3b8;}
+[data-theme="dark"] .dashboard{background:#0f172a;}
+[data-theme="dark"] .stat-card{background:#1e293b;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+[data-theme="dark"] .stat-value{color:#e2e8f0;}
+[data-theme="dark"] .stat-label{color:#94a3b8;}
+[data-theme="dark"] .dash-card{background:#1e293b;}
+[data-theme="dark"] .dash-card-header{color:#e2e8f0;border-bottom-color:#334155;}
+[data-theme="dark"] .activity-text{color:#cbd5e1;}
+[data-theme="dark"] .compliance-bar{background:#1e293b;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+[data-theme="dark"] .mobile-bottom-nav{background:#1e293b;border-top-color:#334155;}
+[data-theme="dark"] .mobile-nav-item{color:#94a3b8;background:transparent;}
+[data-theme="dark"] .mobile-nav-item.active{color:#60a5fa;background:#1e3a5f;}
+[data-theme="dark"] .mobile-chat-back{background:#1e293b;border-bottom-color:#334155;}
+[data-theme="dark"] .mobile-chat-back-name{color:#e2e8f0;}
+[data-theme="dark"] .modal{background:#1e293b;}
+[data-theme="dark"] .modal-header{border-bottom-color:#334155;}
+[data-theme="dark"] .modal-title{color:#e2e8f0;}
+[data-theme="dark"] .modal-footer{border-top-color:#334155;}
+[data-theme="dark"] .form-input{background:#0f172a;border-color:#334155;color:#e2e8f0;}
+[data-theme="dark"] .form-label{color:#94a3b8;}
+[data-theme="dark"] .clinic-option{border-color:#334155;background:#162032;}
+[data-theme="dark"] .clinic-option:hover{border-color:#3b82f6;background:#1e3a5f;}
+[data-theme="dark"] .clinic-option-name{color:#e2e8f0;}
+[data-theme="dark"] .clinic-option-detail{color:#94a3b8;}
 </style>
 </head>
 <body>
